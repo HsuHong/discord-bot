@@ -4,7 +4,7 @@
   "description": "Arendelle Odyssey Discord Bot",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ."
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/ArendelleOdyssey/discord-bot#readme",
   "dependencies": {
-    "discord.js": "^12.4.1",
+    "discord.js": "^11.5.1",
+    "fs": "0.0.1-security",
     "twitter-lite": "^0.14.0"
   }
 }
