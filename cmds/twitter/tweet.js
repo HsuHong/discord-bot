@@ -31,9 +31,11 @@ module.exports = async function(client, message, prefix, config, twitter_client)
                                     media_ids: media.media_id_string // Pass the media id string
                                 }
 
-                                tweet = await twitter_client.post('statuses/update', status, function(error, tweet, response) {
+                                twitter_client.post('statuses/update', status, function(error, thistweet, response) {
                                     if (error) {
                                         message.channel.send('Error while tweeting')
+                                    } else {
+                                        tweet = thistweet
                                     }
                                     fs.unlinkSync('./data/img' + message.attachments.array()[0].url.slice(-4))
                                 });
