@@ -1,17 +1,8 @@
 const Discord = require('discord.js')
 const Twitter = require('twitter-lite')
 
-async function twitterStreaming(client, config){
-
-    var tokens = {
-        consumer_key:        config.twitter.consumer_key,
-        consumer_secret:     config.twitter.consumer_secret,
-        access_token_key:    config.twitter.access_token_key,
-        access_token_secret: config.twitter.access_token_secret,
-    };
+module.exports = async function(twitter_client, client, config){
     
-    const twitter_client = new Twitter(tokens);
-
     var result = await twitter_client.get('users/show', { screen_name: config.twitter.screen_name })
     .catch(err => {
         console.log(`Twitter User GET request error for ${config.twitter.screen_name}: ` + err.errors[0].message + ' - ' + err.errors[0].code);
@@ -120,4 +111,3 @@ async function twitterStreaming(client, config){
         console.log(`[${functiondate()} - ${functiontime()} ] ${stall.warning.message} - ` + stall.warning.code)
     })
 }
-module.exports = twitterStreaming
