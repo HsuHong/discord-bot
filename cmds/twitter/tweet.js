@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const Twitter = require('twitter-lite')
+const download = require('download')
 const fs = require('fs')
 
 module.exports = async function(client, message, prefix, config, twitter_client){
@@ -16,27 +17,31 @@ module.exports = async function(client, message, prefix, config, twitter_client)
 
                 if (message.attachments.size > 0){
 
-                    // Load your image
-                    var data = fs.readFileSync(message.attachments.array()[0].url);
+                    download(message.attachments.array()[0].url, './data', {filename: 'img' + message.attachments.array()[0].url.slice(-4)})
+                    .then(async function(){
+                        // Load your image
+                        var data = fs.readFileSync('./data/img' + message.attachments.array()[0].url.slice(-4));
 
-                    // Make post request on media endpoint. Pass file data as media parameter
-                    twitter_client.post('media/upload', {media: data}, function(error, media, response) {
-                        if (!error) {
-                            // Lets tweet it
-                            var status = {
-                                status: args,
-                                media_ids: media.media_id_string // Pass the media id string
-                            }
-
-                            tweet = twitter_client.post('statuses/update', status, function(error, tweet, response) {
-                                if (!error) {
-                                    console.log(tweet);
+                        // Make post request on media endpoint. Pass file data as media parameter
+                        twitter_client.post('media/upload', {media: data}, function(error, media, response) {
+                            if (!error) {
+                                // Lets tweet it
+                                var status = {
+                                    status: args,
+                                    media_ids: media.media_id_string // Pass the media id string
                                 }
-                            });
-                        } else if (error) {
-                            message.channel.send('Error while uploading the image to Twitter')
-                        }
-                    });
+
+                                tweet = await twitter_client.post('statuses/update', status, function(error, tweet, response) {
+                                    if (error) {
+                                        message.channel.send('Error while tweeting')
+                                    }
+                                    fs.unlinkSync('./data/img' + message.attachments.array()[0].url.slice(-4))
+                                });
+                            } else if (error) {
+                                message.channel.send('Error while uploading the image to Twitter')
+                            }
+                        });
+                    })                    
                 } else {
                     tweet = await twitter_client.post("statuses/update", {
                         status: args

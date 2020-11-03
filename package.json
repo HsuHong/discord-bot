@@ -18,6 +18,7 @@
   "homepage": "https://github.com/ArendelleOdyssey/discord-bot#readme",
   "dependencies": {
     "discord.js": "^11.5.1",
+    "download": "8.0.0",
     "fs": "0.0.1-security",
     "twitter-lite": "^0.14.0"
   }
