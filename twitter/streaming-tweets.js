@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const Twitter = require('twitter-lite')
 
 module.exports = async function(twitter_client, client, config){
-    
+
     var result = await twitter_client.get('users/show', { screen_name: config.twitter.screen_name })
     .catch(err => {
         console.log(`Twitter User GET request error for ${config.twitter.screen_name}: ` + err.errors[0].message + ' - ' + err.errors[0].code);
@@ -103,11 +103,11 @@ module.exports = async function(twitter_client, client, config){
         }
     })
     Tstream.on('error', function(err) {
-        console.log(`[${functiondate()} - ${functiontime()} ] globaltwit stream error:`)
+        console.log(`globaltwit stream error:`)
         console.log(err)
     })
     Tstream.on('stall_warnings', function(stall) {
         client.users.find(u => u.id == config.discord.owner_id).send(`:warning: ${stall.warning.message}`)
-        console.log(`[${functiondate()} - ${functiontime()} ] ${stall.warning.message} - ` + stall.warning.code)
+        console.log(`${stall.warning.message} - ` + stall.warning.code)
     })
 }
