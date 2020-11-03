@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const Twitter = require('twitter-lite')
+const fs = require('fs')
 
 module.exports = async function(client, message, prefix, config, twitter_client){
     if (message.content.toLowerCase().startsWith(prefix + 'tweet')){
@@ -12,7 +13,7 @@ module.exports = async function(client, message, prefix, config, twitter_client)
                 message.channel.send('Your message exceeds Twitter\'s limit who is 280 characters.\nPlease use the web/mobile app')
             } else {
                 var tweet;
-                
+
                 if (message.attachments.size > 0){
 
                     // Load your image
