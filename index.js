@@ -2,7 +2,7 @@ const fs = require('fs')
 const config = JSON.parse(fs.readFileSync('./data/config.json'))
 const Discord = require('discord.js')
 const client = new Discord.Client()
-const Twitter = require('twitter')
+const Twitter = require('twitter-lite')
 const twitter_client = new Twitter({
     consumer_key:        config.twitter.consumer_key,
     consumer_secret:     config.twitter.consumer_secret,
