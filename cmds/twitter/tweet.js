@@ -13,8 +13,6 @@ module.exports = async function(client, message, prefix, config, twitter_client)
             if (args.length >= 280){
                 message.channel.send('Your message exceeds Twitter\'s limit who is 280 characters.\nPlease use the web/mobile app')
             } else {
-                var tweet;
-
                 if (message.attachments.size > 0){
 
                     download(message.attachments.array()[0].url, './data', {filename: 'img' + message.attachments.array()[0].url.slice(-4)})
@@ -31,11 +29,11 @@ module.exports = async function(client, message, prefix, config, twitter_client)
                                     media_ids: media.media_id_string // Pass the media id string
                                 }
 
-                                twitter_client.post('statuses/update', status, function(error, thistweet, response) {
+                                twitter_client.post('statuses/update', status, function(error, tweet, response) {
                                     if (error) {
                                         message.channel.send('Error while tweeting')
                                     } else {
-                                        tweet = thistweet
+                                        message.channel.send(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
                                     }
                                     fs.unlinkSync('./data/img' + message.attachments.array()[0].url.slice(-4))
                                 });
@@ -45,11 +43,11 @@ module.exports = async function(client, message, prefix, config, twitter_client)
                         });
                     })                    
                 } else {
-                    tweet = await twitter_client.post("statuses/update", {
+                    var tweet = await twitter_client.post("statuses/update", {
                         status: args
                     });
+                    message.channel.send(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
                 }
-                message.channel.send(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
             }
         } else {
             message.react('<:ao6:764125409909669919>')
