@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const Twitter = require('twitter-lite')
+const Twitter = require('twitter')
 const download = require('download')
 const fs = require('fs')
 
@@ -21,7 +21,7 @@ module.exports = async function(client, message, prefix, config, twitter_client)
                         var data = fs.readFileSync('./data/img' + message.attachments.array()[0].url.slice(-4));
 
                         // Make post request on media endpoint. Pass file data as media parameter
-                        twitter_client.post('media/upload', {media: data}, async function(error, media, response) {
+                        twitter_client.post('media/upload', {media: data}, function(error, media, response) {
                             if (!error) {
                                 // Lets tweet it
                                 var status = {

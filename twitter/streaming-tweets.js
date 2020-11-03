@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const Twitter = require('twitter-lite')
+const Twitter = require('twitter')
 
 module.exports = async function(twitter_client, client, config){
 
