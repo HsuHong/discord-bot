@@ -22,5 +22,5 @@ client.on('ready', () => {
 client.on('message', message => {
     if (message.author.bot) return
 
-    require('./cmds/import_cmds.js')(client, message, config.discord.prefix, config, twitter_client)
+    require('./cmds/import_cmds.js')(client, message, config.discord.prefix, config)
 })

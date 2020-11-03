@@ -20,6 +20,7 @@
     "discord.js": "^11.5.1",
     "download": "8.0.0",
     "fs": "0.0.1-security",
+    "twit": "2.2.11",
     "twitter-lite": "^0.14.0"
   }
 }
