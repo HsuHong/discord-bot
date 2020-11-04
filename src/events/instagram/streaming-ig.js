@@ -2,8 +2,8 @@ const Discord = require('discord.js')
 const ig = require('instagram-scraping')
 
 module.exports = function(client, config, old_ig_id){
-    setInterval(async function(){
-        ig.scrapeUserPage(config.instagram.screen_name).then(iguser=>{
+    setInterval(function(){
+        ig.scrapeUserPage(config.instagram.screen_name).then(async iguser=>{
             if (old_ig_id != undefined && old_ig_id === iguser.medias[0].shortcode) {
                 console.log('[IG] no new posts')
             }
