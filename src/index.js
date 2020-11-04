@@ -14,6 +14,7 @@ client.login(config.discord.token)
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`)
+    client.user.setActivity(config.discord.prefix + 'help', { type: 'WATCHING' })
     
     // Read @ArendelleO Tweets
     require('./twitter/streaming-tweets.js')(twitter_client, client, config)
