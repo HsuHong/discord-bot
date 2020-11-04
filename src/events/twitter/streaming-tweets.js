@@ -45,6 +45,7 @@ module.exports = async function(twitter_client, client, config){
             tweet.text.replace('&amp;', '&')
             if (tweet.retweeted === true || tweet.text.startsWith('RT')) {
                 if (config.twitter.retweet === true) {
+                    if (tweet.retweeted_status.user.id_str == result.id_str) return
                     console.log(con_header + `Retweet from @${tweet.retweeted_status.user.screen_name}`)
                     embed.setColor(config.twitter.embed_color ? config.twitter.embed_color : 'RANDOM')
                         .setAuthor(`Retweet\n${tweet.retweeted_status.user.name} (@${tweet.retweeted_status.user.screen_name})`, tweet.retweeted_status.user.profile_image_url_https.replace("normal.jpg", "200x200.jpg"), `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
