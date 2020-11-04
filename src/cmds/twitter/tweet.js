@@ -18,6 +18,7 @@ module.exports = async function(client, message, prefix, config){
 
             let args = message.content.split(" ");
             args.shift();
+            if (args.length < 1) return message.channel.send(`Usage: \`${prefix}tweet [message]\`. You can add an image attached with the command`)
             args.join(' ')
             
             if (args.length >= 280){
