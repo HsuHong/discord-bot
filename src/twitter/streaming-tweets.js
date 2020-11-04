@@ -13,6 +13,7 @@ module.exports = async function(twitter_client, client, config){
         return
     })
 
+    if (!result.id_str) return console.log('Twitter Streaming error: unable to find ID of ' + config.twitter.screen_name)
     const Tstream = twitter_client.stream("statuses/filter", { follow: result.id_str })
 
     Tstream.on('start', function(start_result) {
