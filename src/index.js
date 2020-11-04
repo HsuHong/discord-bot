@@ -20,8 +20,8 @@ client.on('ready', () => {
     require('./events/twitter/streaming-tweets.js')(twitter_client, client, config)
 
     // Read @arendelleodyssey IG posts
-    var old_ig_id = undefined
-    require('./events/instagram/streaming-ig.js')(client, config, old_ig_id)
+    //var old_ig_id = undefined
+    //require('./events/instagram/streaming-ig.js')(client, config, old_ig_id)
 })
 
 client.on('message', message => {
