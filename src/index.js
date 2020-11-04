@@ -17,7 +17,7 @@ client.on('ready', () => {
     client.user.setActivity(config.discord.prefix + 'help', { type: 'WATCHING' })
     
     // Read @ArendelleO Tweets
-    require('./twitter/streaming-tweets.js')(twitter_client, client, config)
+    require('./events/twitter/streaming-tweets.js')(twitter_client, client, config)
 
     // Read @arendelleodyssey IG posts
     var old_ig_id = undefined
