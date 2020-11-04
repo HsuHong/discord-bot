@@ -19,9 +19,9 @@ module.exports = async function(client, message, prefix, config){
             let args = message.content.split(" ");
             args.shift();
             if (args.length < 1) return message.channel.send(`Usage: \`${prefix}tweet [message]\`. You can add an image attached with the command`)
-            args.join(' ')
+            var text = args.join(' ')
             
-            if (args.length >= 280){
+            if (text.length >= 280){
                 message.channel.send('Your message exceeds Twitter\'s limit who is 280 characters.\nPlease use the web/mobile app')
             } else {
                 if (message.attachments.size > 0){
@@ -36,7 +36,7 @@ module.exports = async function(client, message, prefix, config){
                             if (!error) {
                                 // Lets tweet it
                                 var status = {
-                                    status: args,
+                                    status: text,
                                     media_ids: media.media_id_string // Pass the media id string
                                 }
 
@@ -60,7 +60,7 @@ module.exports = async function(client, message, prefix, config){
                         message.channel.send('Error while uploading the image to Twitter')
                     })
                 } else {
-                    twitter.post('statuses/update', {status: args}, function(error, tweet, response) {
+                    twitter.post('statuses/update', {status: text}, function(error, tweet, response) {
                         if (!error) {
                             message.channel.send(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
                         } else {
