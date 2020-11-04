@@ -8,7 +8,7 @@ module.exports = async function(client, message, config){
 			{
 				method: 'POST',
 				headers: {
-					'Authorization': `${rest.tokenPrefix} ${config.discord.token}`,
+					'Authorization': `Bot ${config.discord.token}`,
 				},
 			},
 		)
