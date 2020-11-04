@@ -1,7 +1,7 @@
 {
   "name": "ao-bot",
   "version": "0.1.0",
-  "private":"true",
+  "private": "true",
   "description": "Arendelle Odyssey Discord Bot",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,7 @@
     "download": "8.0.0",
     "fs": "0.0.2",
     "instagram-scraping": "^1.0.13",
+    "shelljs": "^0.8.4",
     "twit": "2.2.11",
     "twitter-lite": "^0.14.0"
   }
