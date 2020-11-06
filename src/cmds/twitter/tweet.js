@@ -21,17 +21,17 @@ module.exports = async function(client, message, prefix, config){
             if (args.length < 1) return message.channel.send(`Usage: \`${prefix}tweet [message]\`. You can add an image attached with the command`)
             var text = args.join(' ')
 
-            message.react('<:AOBlobSignYES:759633214092083200>').then(() => message.react('<:AOBlobSignNO:759635493251186718>'));
+            message.react('✅').then(() => message.react('❌'));
 
             const filter = (reaction, user) => {
-                return ['<:AOBlobSignYES:759633214092083200>', '<:AOBlobSignNO:759635493251186718>'].includes(reaction.emoji.name) && user.id === message.author.id;
+                return ['✅', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
             };
 
             message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
                 .then(collected => {
                     const reaction = collected.first();
 
-                    if (reaction.emoji.name === '<:AOBlobSignYES:759633214092083200>') {
+                    if (reaction.emoji.name === '✅') {
                         if (text.length >= 280){
                             message.channel.send('Your message exceeds Twitter\'s limit who is 280 characters.\nPlease use the web/mobile app')
                         } else {
@@ -85,7 +85,7 @@ module.exports = async function(client, message, prefix, config){
                     }
                 })
                 .catch(collected => {
-                    message.reply('you reacted with neither a thumbs up, nor a thumbs down.');
+                    message.delete();
             });
         } else {
             message.react('<:ao6:764125409909669919>')
