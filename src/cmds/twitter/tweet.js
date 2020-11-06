@@ -20,56 +20,73 @@ module.exports = async function(client, message, prefix, config){
             args.shift();
             if (args.length < 1) return message.channel.send(`Usage: \`${prefix}tweet [message]\`. You can add an image attached with the command`)
             var text = args.join(' ')
+
+            message.react('<:AOBlobSignYES:759633214092083200>').then(() => message.react('<:AOBlobSignNO:759635493251186718>'));
+
+            const filter = (reaction, user) => {
+                return ['<:AOBlobSignYES:759633214092083200>', '<:AOBlobSignNO:759635493251186718>'].includes(reaction.emoji.name) && user.id === message.author.id;
+            };
+
+            message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+                .then(collected => {
+                    const reaction = collected.first();
+
+                    if (reaction.emoji.name === '<:AOBlobSignYES:759633214092083200>') {
+                        if (text.length >= 280){
+                            message.channel.send('Your message exceeds Twitter\'s limit who is 280 characters.\nPlease use the web/mobile app')
+                        } else {
+                            if (message.attachments.size > 0){
+                                download(message.attachments.array()[0].url, './data', {filename: 'img' + message.attachments.array()[0].url.slice(-4)})
+                                .then(function(){
+                                    // Load your image
+                                    var data = fs.readFileSync('./data/img'+ message.attachments.array()[0].url.slice(-4), { encoding: 'base64' });
             
-            if (text.length >= 280){
-                message.channel.send('Your message exceeds Twitter\'s limit who is 280 characters.\nPlease use the web/mobile app')
-            } else {
-                if (message.attachments.size > 0){
-
-                    download(message.attachments.array()[0].url, './data', {filename: 'img' + message.attachments.array()[0].url.slice(-4)})
-                    .then(function(){
-                        // Load your image
-                        var data = fs.readFileSync('./data/img'+ message.attachments.array()[0].url.slice(-4), { encoding: 'base64' });
-
-                        // Make post request on media endpoint. Pass file data as media parameter
-                        twitter.post('media/upload', {media_data: data}, function(error, media, response) {
-                            if (!error) {
-                                // Lets tweet it
-                                var status = {
-                                    status: text,
-                                    media_ids: media.media_id_string // Pass the media id string
-                                }
-
-                                twitter.post('statuses/update', status, function(error, tweet, response) {
+                                    // Make post request on media endpoint. Pass file data as media parameter
+                                    twitter.post('media/upload', {media_data: data}, function(error, media, response) {
+                                        if (!error) {
+                                            // Lets tweet it
+                                            var status = {
+                                                status: text,
+                                                media_ids: media.media_id_string // Pass the media id string
+                                            }
+            
+                                            twitter.post('statuses/update', status, function(error, tweet, response) {
+                                                if (!error) {
+                                                    message.channel.send(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
+                                                    fs.unlinkSync('./data/img'+ message.attachments.array()[0].url.slice(-4))
+                                                } else {
+                                                    console.error(error)
+                                                    message.channel.send('Error while tweeting')
+                                                }
+                                            });
+                                        } else if (error) {
+                                            console.error(error)
+                                            message.channel.send('Error while uploading to Twitter')
+                                        }
+                                    })
+                                })
+                                .catch(err=>{
+                                    console.error(err)
+                                    message.channel.send('Error while uploading the image to Twitter')
+                                })
+                            } else {
+                                twitter.post('statuses/update', {status: text}, function(error, tweet, response) {
                                     if (!error) {
                                         message.channel.send(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
-                                        fs.unlinkSync('./data/img'+ message.attachments.array()[0].url.slice(-4))
                                     } else {
-                                        console.error(error)
                                         message.channel.send('Error while tweeting')
+                                        console.error(error)
                                     }
                                 });
-                            } else if (error) {
-                                console.error(error)
-                                message.channel.send('Error while uploading to Twitter')
                             }
-                        })
-                    })
-                    .catch(err=>{
-                        console.error(err)
-                        message.channel.send('Error while uploading the image to Twitter')
-                    })
-                } else {
-                    twitter.post('statuses/update', {status: text}, function(error, tweet, response) {
-                        if (!error) {
-                            message.channel.send(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
-                        } else {
-                            message.channel.send('Error while tweeting')
-                            console.error(error)
                         }
-                    });
-                }
-            }
+                    } else {
+                        message.delete();
+                    }
+                })
+                .catch(collected => {
+                    message.reply('you reacted with neither a thumbs up, nor a thumbs down.');
+            });
         } else {
             message.react('<:ao6:764125409909669919>')
         }
