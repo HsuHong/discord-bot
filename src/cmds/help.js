@@ -10,7 +10,7 @@ module.exports = function(client, message, prefix, config){
         const randommsgs = JSON.parse(fs.readFileSync('./data/help_greet_user.json'))
         let randommsg = randomItem(randommsgs)
     
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
     
         embed.setAuthor(client.user.username, client.user.displayAvatarURL)
         .setColor('#000F42')
