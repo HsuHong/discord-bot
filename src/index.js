@@ -15,6 +15,9 @@ client.login(config.discord.token)
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`)
     client.user.setActivity(config.discord.prefix + 'help', { type: 'WATCHING' })
+
+    // start express server
+    require('./web-express/exp-srv.js')(client, config)
     
     // Read @ArendelleO Tweets
     require('./events/twitter/streaming-tweets.js')(twitter_client, client, config)
