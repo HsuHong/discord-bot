@@ -4,11 +4,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-function web_pages(){
-    app.use('/', require('./routes/index.js')(client, config));
-}
-
-
 module.exports = function(client, config){
     const app = express()
     const port = 8080 // Port 8080 will be proxied by apache2's module "proxy_http" to its domain
@@ -23,7 +18,7 @@ module.exports = function(client, config){
     app.use(express.static(path.join(__dirname, 'public')));
 
     // Set pages
-    web_pages()
+    app.use('/', require('./routes/index.js')(client, config));
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
