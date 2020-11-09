@@ -33,10 +33,10 @@ module.exports = async function(twitter_client, client, config){
 
             let embed = new Discord.MessageEmbed
 
-            var webhooks = await client.channels.cache.cache.find(c => c.id == config.twitter.post_channel_id).fetchWebhooks()
+            var webhooks = await client.channels.cache.find(c => c.id == config.twitter.post_channel_id).fetchWebhooks()
             var webhook = webhooks.find(wh=> wh.name == 'AO Twitter')
             if (webhook == null){
-                await client.channels.cache.cache.find(c => c.id == config.twitter.post_channel_id).createWebhook('AO Twitter', 'https://cdn.discordapp.com/attachments/662735703284908067/773131257311395900/Screen_Shot_2020-07-13_at_12.png')
+                await client.channels.cache.find(c => c.id == config.twitter.post_channel_id).createWebhook('AO Twitter', 'https://cdn.discordapp.com/attachments/662735703284908067/773131257311395900/Screen_Shot_2020-07-13_at_12.png')
                 webhook = webhooks.find(wh=> wh.name == 'AO Twitter')
                 if (webhook == null) return
             }
@@ -100,7 +100,7 @@ module.exports = async function(twitter_client, client, config){
                 }
             }
         } catch (e) {
-            console.log(`ERROR: ` + e)
+            console.log(`[twt-stream] ERROR: `,e)
             console.log(tweet)
         }
     })
@@ -109,7 +109,7 @@ module.exports = async function(twitter_client, client, config){
         console.log(err)
     })
     Tstream.on('stall_warnings', function(stall) {
-        client.users.find(u => u.id == config.discord.owner_id).send(`:warning: ${stall.warning.message}`)
+        client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: ${stall.warning.message}`)
         console.log(`${stall.warning.message} - ` + stall.warning.code)
     })
 }
