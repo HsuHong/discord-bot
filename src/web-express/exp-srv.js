@@ -4,6 +4,10 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+function web_pages(){
+    app.use('/', require('./routes/index.js')(client, config));
+}
+
 
 module.exports = function(client, config){
     const app = express()
@@ -18,6 +22,8 @@ module.exports = function(client, config){
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, 'public')));
 
+    // Set pages
+    web_pages()
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
@@ -33,9 +39,6 @@ module.exports = function(client, config){
         res.status(err.status || 500);
         res.render('error');
     });
-
-
-    app.use('/', require('./routes/index.js')(client, config));
     
     app.listen(port, () =>{
         console.log('Express server running')
