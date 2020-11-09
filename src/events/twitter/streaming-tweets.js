@@ -31,12 +31,12 @@ module.exports = async function(twitter_client, client, config){
             if (!tweet.text || tweet.text == '') return
             var con_header = `[Twitter] `
 
-            let embed = new Discord.RichEmbed
+            let embed = new Discord.MessageEmbed
 
-            var webhooks = await client.channels.find(c => c.id == config.twitter.post_channel_id).fetchWebhooks()
+            var webhooks = await client.channels.cache.cache.find(c => c.id == config.twitter.post_channel_id).fetchWebhooks()
             var webhook = webhooks.find(wh=> wh.name == 'AO Twitter')
             if (webhook == null){
-                await client.channels.find(c => c.id == config.twitter.post_channel_id).createWebhook('AO Twitter', 'https://cdn.discordapp.com/attachments/662735703284908067/773131257311395900/Screen_Shot_2020-07-13_at_12.png')
+                await client.channels.cache.cache.find(c => c.id == config.twitter.post_channel_id).createWebhook('AO Twitter', 'https://cdn.discordapp.com/attachments/662735703284908067/773131257311395900/Screen_Shot_2020-07-13_at_12.png')
                 webhook = webhooks.find(wh=> wh.name == 'AO Twitter')
                 if (webhook == null) return
             }
@@ -53,7 +53,7 @@ module.exports = async function(twitter_client, client, config){
                         .setTimestamp(tweet.retweeted_status.created_at)
                         .setThumbnail('https://img.icons8.com/color/96/000000/retweet.png')
                     if (tweet.retweeted_status.entities.media) embed.setImage(tweet.retweeted_status.entities.media[0].media_url_https)
-                    if (client.channels.some(c => c.id == config.twitter.post_channel_id)) {
+                    if (client.channels.cache.some(c => c.id == config.twitter.post_channel_id)) {
                         webhook.send('', {
                             username: tweet.user.name,
                             avatarURL: 'https://cdn.discordapp.com/attachments/662735703284908067/773131257311395900/Screen_Shot_2020-07-13_at_12.png',
@@ -71,7 +71,7 @@ module.exports = async function(twitter_client, client, config){
                         .setDescription(tweet.text)
                         .setTimestamp(tweet.created_at)
                     if (tweet.entities.media) embed.setImage(tweet.entities.media[0].media_url_https)
-                    if (client.channels.some(c => c.id == config.twitter.post_channel_id)) {
+                    if (client.channels.cache.some(c => c.id == config.twitter.post_channel_id)) {
                         webhook.send('', {
                             username: tweet.user.name,
                             avatarURL: 'https://cdn.discordapp.com/attachments/662735703284908067/773131257311395900/Screen_Shot_2020-07-13_at_12.png',
@@ -89,7 +89,7 @@ module.exports = async function(twitter_client, client, config){
                             .setTimestamp(tweet.created_at)
                             .setThumbnail('https://cdn1.iconfinder.com/data/icons/messaging-3/48/Reply-512.png')
                         if (tweet.entities.media) embed.setImage(tweet.entities.media[0].media_url_https)
-                        if (client.channels.some(c => c.id == config.twitter.post_channel_id)) {
+                        if (client.channels.cache.some(c => c.id == config.twitter.post_channel_id)) {
                             webhook.send('', {
                                 username: tweet.user.name,
                                 avatarURL: 'https://cdn.discordapp.com/attachments/662735703284908067/773131257311395900/Screen_Shot_2020-07-13_at_12.png',
