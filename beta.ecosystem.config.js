@@ -1,6 +1,6 @@
 module.exports = {
     apps : [{
-      name: 'arendelleodyssey-bot',
+      name: 'arendelleodyssey-bot-dev',
       script: 'src/index.js',
       args: '-d',
   
