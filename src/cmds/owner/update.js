@@ -9,7 +9,7 @@ module.exports = function(message, client, prefix) {
                 message.reply(`Output:\n\`\`\`${stdout}${stderr}\`\`\``).then(m=>message.channel.stopTyping(true));
             });
         } catch (err) {
-            message.reply(`EVAL **__ERROR__**\n\`\`\`xl\n'git pull && sudo npm update && pm2 start GL'\`\`\``);
+            message.reply(`EVAL **__ERROR__**`);
             message.channel.stopTyping(true)
         }
     }

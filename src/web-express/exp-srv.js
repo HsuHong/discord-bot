@@ -5,8 +5,13 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 module.exports = function(client, config){
-    const app = express()
-    const port = 8080 // Port 8080 will be proxied by apache2's module "proxy_http" to its domain
+    const app = express() 
+    var port // Custom port will be proxied by apache2's module "proxy_http" to its domain
+    if (client.user.id == config.discord.bot_id){
+        port = 8080
+    } else if (client.user.id == config.discord.bot_id_beta) {
+        port = 8081
+    }
 
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'ejs');
@@ -36,6 +41,6 @@ module.exports = function(client, config){
     });
     
     app.listen(port, () =>{
-        console.log('Express server running')
+        console.log(`Express server running on port ${port}`)
     })
 }
