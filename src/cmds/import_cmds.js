@@ -10,7 +10,7 @@ module.exports = function(client, message, prefix, config){
 
     // Owner commands
     if (message.author.id == config.discord.owner_id){
-        require('./owner/update.js')(message, client, prefix)
+        require('./owner/update.js')(message, client, prefix, config)
     }
 
 }
