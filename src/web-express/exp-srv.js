@@ -12,7 +12,8 @@ module.exports = function(client, config){
     } else if (client.user.id == config.discord.bot_id_beta) {
         port = 8081
     }
-
+    
+    app.disable('etag');
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'ejs');
 
@@ -24,6 +25,7 @@ module.exports = function(client, config){
 
     // Set pages
     app.use('/', require('./routes/index.js')(client, config));
+    app.use('/status', require('./routes/status.js')(client, config));
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {

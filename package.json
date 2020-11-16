@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": "true",
   "description": "Arendelle Odyssey Discord Bot",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "test": "node . -d"
   },
   "repository": {
     "type": "git",

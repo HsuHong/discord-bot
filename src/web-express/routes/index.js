@@ -5,7 +5,9 @@ module.exports = function(client, config){
 
   /* GET home page. */
   router.get('/', function(req, res, next) {
-    res.render('index', { title: client.user.username });
+    res.render('index', {
+      title: client.user.username
+    });
   });
 
   return router
