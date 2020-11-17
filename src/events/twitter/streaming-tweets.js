@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 const Twitter = require('twitter-lite')
 
-module.exports = async function(twitter_client, client, config){
+module.exports = async function(twitter_client, client, config, sql){
 
     var result = await twitter_client.get('users/show', { screen_name: config.twitter.screen_name })
     .catch(err => {
@@ -19,12 +19,18 @@ module.exports = async function(twitter_client, client, config){
     Tstream.on('start', function(start_result) {
         if (start_result.status == 200){
             console.log(`🟢 Twitter streaming API started - Watching ${config.twitter.screen_name} (ID: ${result.id_str})`)
+            sql.query("UPDATE `twitter_status` SET `isOnline` = 1 WHERE `twitter_status`.`isOnline` = 0", (err, res)=>{
+                if (err) console.error(err)
+            })
         }
         else console.log(start_result.statusText)
     })
     Tstream.on("end", async response => {
         console.log(`🔴 Twitter streaming API ended`)
         client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Twitter Streaming API ended`)
+        sql.query("UPDATE `twitter_status` SET `isOnline` = 0 WHERE `twitter_status`.`isOnline` = 1", (err, res)=>{
+            if (err) console.error(err)
+        })
     });
     Tstream.on('data', async function(tweet) {
         try {
@@ -107,6 +113,9 @@ module.exports = async function(twitter_client, client, config){
     Tstream.on('error', function(err) {
         console.log(`globaltwit stream error:`)
         console.log(err)
+        sql.query("UPDATE `twitter_status` SET `isOnline` = 0 WHERE `twitter_status`.`isOnline` = 1", (err, res)=>{
+            if (err) console.error(err)
+        })
     })
     Tstream.on('stall_warnings', function(stall) {
         client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: ${stall.warning.message}`)

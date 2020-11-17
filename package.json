@@ -28,6 +28,7 @@
     "http-errors": "^1.8.0",
     "instagram-scraping": "^1.0.13",
     "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
     "node-fetch": "^2.6.1",
     "shelljs": "^0.8.4",
     "twit": "2.2.11",

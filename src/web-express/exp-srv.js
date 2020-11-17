@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-module.exports = function(client, config){
+module.exports = function(client, config, sql){
     const app = express() 
     var port // Custom port will be proxied by apache2's module "proxy_http" to its domain
     if (client.user.id == config.discord.bot_id){
@@ -25,7 +25,7 @@ module.exports = function(client, config){
 
     // Set pages
     app.use('/', require('./routes/index.js')(client, config));
-    app.use('/status', require('./routes/status.js')(client, config));
+    app.use('/status', require('./routes/status.js')(client, config, sql));
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {

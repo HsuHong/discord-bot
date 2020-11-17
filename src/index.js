@@ -2,6 +2,15 @@ const fs = require('fs')
 const config = JSON.parse(fs.readFileSync('./data/config.json'))
 const Discord = require('discord.js')
 const client = new Discord.Client()
+
+const MySQL = require('mysql')
+const sql = MySQL.createConnection({
+    host     : config.mysql.host,
+    user     : config.mysql.user,
+    password : config.mysql.password,
+    database : config.mysql.database
+})
+
 const Twitter = require('twitter-lite')
 
 const execArgs = process.argv;
@@ -17,8 +26,20 @@ else {
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`)
 
+    sql.connect(()=>{
+        console.log('[SQL] Connected to the MySQL server!')
+    })
+    
+    sql.query('SHOW TABLES', function (error, results, fields) {
+        if (error) throw error;
+        if (results.length == 0){
+            console.log('[SQL] No tables are set in the database')
+            require('./sqlScripts/create-tables.js')(sql, client)
+        }
+    });
+
     // start express server
-    require('./web-express/exp-srv.js')(client, config)
+    require('./web-express/exp-srv.js')(client, config, sql)
 
     if (client.user.id == config.discord.bot_id){
         const twitter_client = new Twitter({
@@ -32,7 +53,7 @@ client.on('ready', () => {
         client.user.setStatus('online')
         
         // Read @ArendelleO Tweets
-        require('./events/twitter/streaming-tweets.js')(twitter_client, client, config)
+        require('./events/twitter/streaming-tweets.js')(twitter_client, client, config, sql)
 
         // Read @arendelleodyssey IG posts
         //var old_ig_id = undefined
