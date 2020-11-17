@@ -17,7 +17,8 @@ module.exports = function(client, config){
     res.render('status', {
       client: client,
       discordjsver: discordjsver,
-      nodever: nodever
+      nodever: nodever,
+      config: config
     })
   });
 

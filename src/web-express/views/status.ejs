@@ -17,6 +17,12 @@
     <h1><%= client.user.username %>'s Status :</h1>
     <p>Bot name: <%= client.user.tag %></p>
     <p id="uptime">Uptime: loading...</p>
+    <p>Actual prefix: <% if (client.user.id == config.discord.bot_id) { %>
+     <%= config.discord.prefix %> 
+    <% } else if (client.user.id == config.discord.bot_id_beta) { %>
+      <%= config.discord.prefix_beta %>
+    <% } %>  
+     </p>
     <p>Node.js version: <%= nodever %></p>
     <p>Discord.js version: <%= discordjsver %></p>
 
