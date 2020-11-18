@@ -10,7 +10,13 @@ const sql = MySQL.createConnection({
     password : config.mysql.password,
     database : config.mysql.database
 })
-
+sql.query('SHOW TABLES', async function (error, results, fields) {
+    if (error) throw error;
+    if (results.length == 0){
+        console.log('[SQL] No tables are set in the database')
+        await require('./sqlScripts/create-tables.js')(sql, client)
+    }
+});
 const Twitter = require('twitter-lite')
 
 const execArgs = process.argv;
@@ -29,14 +35,6 @@ client.on('ready', () => {
     sql.connect(()=>{
         console.log('[SQL] Connected to the MySQL server!')
     })
-    
-    sql.query('SHOW TABLES', function (error, results, fields) {
-        if (error) throw error;
-        if (results.length == 0){
-            console.log('[SQL] No tables are set in the database')
-            require('./sqlScripts/create-tables.js')(sql, client)
-        }
-    });
 
     // start express server
     require('./web-express/exp-srv.js')(client, config, sql)
