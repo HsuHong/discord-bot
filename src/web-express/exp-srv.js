@@ -24,8 +24,7 @@ module.exports = function(client, config, sql){
     app.use(express.static(path.join(__dirname, 'public')));
 
     // Set pages
-    app.use('/', require('./routes/index.js')(client, config));
-    app.use('/status', require('./routes/status.js')(client, config, sql));
+    require('./pageList.js')(app, client, config, sql)
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
