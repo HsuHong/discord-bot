@@ -16,6 +16,7 @@ module.exports = function(client, message, prefix, config){
         .setColor('#000F42')
         .setDescription(`Hey ${message.author.username}! ` + randommsg + '\nAnyway, here\'s some commands!')
     
+        embed.addField(prefix + 'sots', 'Spirit of Two Sisters...', true)
         if (config.twitter.posters.includes(message.author.id)) embed.addField(prefix + 'tweet', 'Post a tweet to Arendelle Odyssey Twitter', true)
         if (message.author.id == config.discord.owner_id) embed.addField(prefix + 'update', '[Owner] Update the bot from git repo', true)
 
