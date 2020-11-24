@@ -5,7 +5,8 @@
   "description": "Arendelle Odyssey Discord Bot",
   "main": "index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "test": "npx eslint src/."
   },
   "repository": {
     "type": "git",
@@ -31,5 +32,8 @@
     "shelljs": "^0.8.4",
     "twit": "2.2.11",
     "twitter-lite": "^0.14.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.14.0"
   }
 }
