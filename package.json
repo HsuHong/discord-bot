@@ -6,8 +6,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node .",
-    "dev": "node . -d",
-    "test": "npx eslint src/."
+    "test": "node . -d",
+    "eslint": "npx eslint src/."
   },
   "repository": {
     "type": "git",
