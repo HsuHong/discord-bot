@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= client.guilds.cache.get('729083124226719816').name %> - Events</title>
+    <!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
+
+    <style>
+      table{
+        width: 80%;
+      }
+
+      table, td{
+        border: 1px solid black;   
+        border-collapse: collapse; 
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Events list of <%= client.guilds.cache.get('729083124226719816').name %></h1>
+    <table>
+      <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Description</td>
+        <td>Starts on</td>
+        <td>Ends on</td>
+      </tr>
+      <% sql.query("SELECT * FROM events ORDER BY date_start DESC", (err, res) => { %> 
+        <% if (err) console.error(err) %> 
+        <% for(var i=0; i<res.length; i++) {%>
+          <tr>
+            <td><%= res[i].id %></td>
+            <td><%= res[i].name %></td>
+            <td><%= res[i].description != null ? res[i].description : 'No description' %></td>
+            <td><%= res[i].date_start %></td>
+            <td><%= res[i].date_end != null ? res[i].description : 'No end date provided' %></td>
+          </tr>
+        <% } %>
+      <% }) %> 
+    </table>
+  </body>
+</html>

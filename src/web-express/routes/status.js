@@ -2,7 +2,6 @@ var express = require('express');
 const os = require('os');
 const fs = require('fs');
 const shell = require('shelljs')
-const package = JSON.parse(fs.readFileSync('./package.json', "utf8"));
 
 
 module.exports = function(client, config, sql){
