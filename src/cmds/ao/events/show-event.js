@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 module.exports = function(message, args, command, client, prefix, config, sql){
     var monthNames = [undefined,'January','February','March','April','May','June','July','August','September','October','November','December']
     if (args[1]){
-        sql.query("SELECT * FROM events WHERE id = ?", [args[1]], (err, res) =>{
+        sql.query("SELECT * FROM events WHERE id = ? OR name LIKE ?", [args[1], args[1]], (err, res) =>{
             if (err) {
                 console.error(err)
                 message.channel.send('Error :/\n' + err)
