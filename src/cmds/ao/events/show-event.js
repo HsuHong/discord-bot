@@ -17,7 +17,7 @@ module.exports = function(message, args, command, client, prefix, config, sql){
             let [endMonth, endDate, endYear] = new Date().toLocaleDateString("en-US").split("/")
             embed.addField('End date', `${monthNames[endMonth]} ${endDate}, ${endYear}`, true)
         }
-        embed.setFooter('ID: ' + res[0].id)
+        embed.setFooter('ID: ' + res[0].id + ' | Starts:')
         embed.setTimestamp(res[0].date_start)
         message.channel.send(embed)
     })
