@@ -10,7 +10,7 @@ module.exports = function(client, message, prefix, config, sql){
 
     // AO commands
     require('./ao/sots.js')(message, client, prefix, config)
-    require('./ao/events/event-index.js')(client, message, prefix, config, sql)
+    require('./ao/events/event-index.js')(message, client, prefix, config, sql)
 
     // Owner commands
     if (message.author.id == config.discord.owner_id){
