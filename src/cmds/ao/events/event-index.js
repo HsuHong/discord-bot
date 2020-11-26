@@ -6,7 +6,7 @@ module.exports = function(message, client, prefix, config, sql){
         let args = message.content.split(" ");
         args.shift();
 
-        if (args.length <= 1) {
+        if (args.length < 1) {
             
             let embed = new Discord.MessageEmbed()
             embed.setTitle('Usage of ' + command)
