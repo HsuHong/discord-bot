@@ -12,4 +12,9 @@ module.exports = async function(sql, client, config){
         if (err) console.error(err)
         console.log('[SQL] Created table `mention_responses`')
     })
+
+    await sql.query("CREATE TABLE `events` (`id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(64) NOT NULL, `date_start` DATE NOT NULL, `date_end` DATE NULL, `description` LONGTEXT NULL, PRIMARY KEY (`id`));", (err, res) => {
+        if (err) console.error(err)
+        console.log('[SQL] Created table `events`')
+    })
 }

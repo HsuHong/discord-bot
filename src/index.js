@@ -75,5 +75,5 @@ client.on('message', message => {
     require('./events/auto-publish.js')(client, message, config)
 
     if (message.author.bot) return
-    require('./cmds/import_cmds.js')(client, message, prefix, config)
+    require('./cmds/import_cmds.js')(client, message, prefix, config, sql)
 })
