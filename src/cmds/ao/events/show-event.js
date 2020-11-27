@@ -17,7 +17,7 @@ module.exports = function(message, args, command, client, prefix, config, sql){
             if (res[0].description != null) embed.setDescription(res[0].description)
             embed.addField('Start date', `${monthNames[startMonth]} ${startDate}, ${startYear}`, true)
             if (res[0].date_end != null) {
-                let [endMonth, endDate, endYear] = new Date().toLocaleDateString("en-US").split("/")
+                let [endMonth, endDate, endYear] = new Date(res[0].date_end).toLocaleDateString("en-US").split("/")
                 embed.addField('End date', `${monthNames[endMonth]} ${endDate}, ${endYear}`, true)
             }
             embed.setFooter('ID: ' + res[0].id + ' | Starts:')
@@ -40,7 +40,7 @@ module.exports = function(message, args, command, client, prefix, config, sql){
             if (res[0].description != null) embed.setDescription(res[0].description)
             embed.addField('Start date', `${monthNames[startMonth]} ${startDate}, ${startYear}`, true)
             if (res[0].date_end != null) {
-                let [endMonth, endDate, endYear] = new Date().toLocaleDateString("en-US").split("/")
+                let [endMonth, endDate, endYear] = new Date(res[0].date_end).toLocaleDateString("en-US").split("/")
                 embed.addField('End date', `${monthNames[endMonth]} ${endDate}, ${endYear}`, true)
             }
             embed.setFooter('ID: ' + res[0].id + ' | Starts:')

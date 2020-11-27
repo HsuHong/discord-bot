@@ -9,7 +9,7 @@
         width: 80%;
       }
 
-      table, td{
+      table, td, th{
         border: 1px solid black;   
         border-collapse: collapse; 
         margin: auto;
@@ -27,19 +27,23 @@
         <th>Starts on</th>
         <th>Ends on</th>
       </tr>
-      <% sql.query("SELECT * FROM events ORDER BY date_start DESC", (err, res) => { %> 
-        <% if (err) console.error(err) %> 
-        <% res.forEach(r=>{ %>
-          <% console.log(r) %> 
-          <tr>
-            <td><%= r.id %></td>
-            <td><%= r.name %></td>
-            <td><%= r.description == null ? 'No description' : r.description %></td>
-            <td><%= r.date_start %></td>
-            <td><%= r.date_end == null ? 'No end date provided' : r.description %></td>
-          </tr>
-        <% }) %>
-      <% }) %> 
+      <% var monthNames = [undefined,'January','February','March','April','May','June','July','August','September','October','November','December'] %> 
+      <% sqlresults.forEach(r=>{ %>
+        <% console.log(r.id, r.name) %>
+        <tr>
+          <td><%= r.id %></td>
+          <td><%= r.name %></td>
+          <td><%= r.description == null ? 'No description' : r.description %></td>
+          <% let [startMonth, startDate, startYear] = new Date(r.date_start).toLocaleDateString("en-US").split("/") %>
+          <td><%= `${monthNames[startMonth]} ${startDate}, ${startYear}` %></td>
+          <% if (r.date_end != null){ %>
+            <% let [endMonth, endDate, endYear] = new Date(r.date_end).toLocaleDateString("en-US").split("/") %> 
+            <td><%= `${monthNames[endMonth]} ${endDate}, ${endYear}` %></td>
+          <% } else { %>
+            <td>No end date provided</td>
+          <% } %> 
+        </tr>
+      <% }) %>
     </table>
   </body>
 </html>
