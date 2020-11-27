@@ -13,30 +13,31 @@
         border: 1px solid black;   
         border-collapse: collapse; 
         margin: auto;
+        text-align: center;
       }
     </style>
   </head>
   <body>
     <h1>Events list of Arendelle Odyssey</h1>
     <table>
-      <tr>
+      <th>
         <td>ID</td>
         <td>Name</td>
         <td>Description</td>
         <td>Starts on</td>
         <td>Ends on</td>
-      </tr>
+      </th>
       <% sql.query("SELECT * FROM events ORDER BY date_start DESC", (err, res) => { %> 
         <% if (err) console.error(err) %> 
-        <% for(var i=0; i<res.length; i++) {%>
+        <% else res.forEach(r=>{ %>
           <tr>
-            <td><%= res[i].id %></td>
-            <td><%= res[i].name %></td>
-            <td><%= res[i].description != null ? res[i].description : 'No description' %></td>
-            <td><%= res[i].date_start %></td>
-            <td><%= res[i].date_end != null ? res[i].description : 'No end date provided' %></td>
+            <td><%= r.id %></td>
+            <td><%= r.name %></td>
+            <td><%= r.description == null ? 'No description' : r.description %></td>
+            <td><%= r.date_start %></td>
+            <td><%= r.date_end == null ? 'No end date provided' : r.description %></td>
           </tr>
-        <% } %>
+        <% }) %>
       <% }) %> 
     </table>
   </body>
