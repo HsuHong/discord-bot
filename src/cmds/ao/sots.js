@@ -15,9 +15,9 @@ module.exports = function(message, client, prefix, config) {
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            countdown = days + " days, " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
+            countdown = hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
 
-            if (distance < 0) countdown = "Nov 27, 5pm GMT";
+            if (distance < 0) countdown = "[Watch Now!](https://www.youtube.com/watch?v=jnJhpID2JrQ)";
 
             let embed = new Discord.MessageEmbed();
             embed.setAuthor('Spirit of Two Sisters', client.user.displayAvatarURL(), 'https://arendelleodyssey.com/spirit-of-two-sisters')
