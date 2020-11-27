@@ -20,16 +20,17 @@
   <body>
     <h1>Events list of Arendelle Odyssey</h1>
     <table>
-      <th>
-        <td>ID</td>
-        <td>Name</td>
-        <td>Description</td>
-        <td>Starts on</td>
-        <td>Ends on</td>
-      </th>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Starts on</th>
+        <th>Ends on</th>
+      </tr>
       <% sql.query("SELECT * FROM events ORDER BY date_start DESC", (err, res) => { %> 
         <% if (err) console.error(err) %> 
         <% res.forEach(r=>{ %>
+          <% console.log(r) %> 
           <tr>
             <td><%= r.id %></td>
             <td><%= r.name %></td>
