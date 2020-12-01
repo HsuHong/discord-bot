@@ -8,6 +8,9 @@ module.exports = function(client, message, prefix, config, sql){
     // Twitter integration
     require('./twitter/tweet.js')(client, message, prefix, config)
 
+    // AO managment commands
+    require('./mods/embed-announcement.js')(message, client, prefix, config)
+
     // AO commands
     require('./ao/sots.js')(message, client, prefix, config)
     require('./ao/events/event-index.js')(message, client, prefix, config, sql)
