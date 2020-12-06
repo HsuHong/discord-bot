@@ -56,6 +56,11 @@ client.on('ready', () => {
         // Read @arendelleodyssey IG posts
         //var old_ig_id = undefined
         //require('./events/instagram/streaming-ig.js')(client, config, old_ig_id)
+
+        // Check new youtube posts
+        var old_yt_id = undefined
+        require('./events/youtube/streaming-yt.js')(client, config, old_yt_id)
+
     } else if (client.user.id == config.discord.bot_id_beta) {
         client.user.setActivity(config.discord.prefix_beta + 'help', { type: 'LISTENING' })
         client.user.setStatus('idle')
