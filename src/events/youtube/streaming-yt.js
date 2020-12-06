@@ -13,48 +13,53 @@ function getLatestDate(data) {
 }
 
 module.exports = function(client, config, old_yt_id){
-    setInterval(function(){
-        yt.channelVideos(config.youtube.apikey, config.youtube.channelID, function(channelItems) {
-            var timestamps = []
-            channelItems.forEach(i=>{
-                timestamps.push({MeasureDate: i.snippet.publishedAt})
-            })
-            var lastVid_timestamp = getLatestDate(timestamps)
-            channelItems.forEach(async i=>{
-                if (new Date(i.snippet.publishedAt).getTime() == lastVid_timestamp){
-                    if (old_yt_id != undefined && old_yt_id === i.id.videoId) {
-                        console.log('[YT] no new posts')
-                    }
-                    if (old_yt_id != undefined && old_ig_id !== i.id.videoId){
-                        console.log('[YT] new post!')
-
-                        var webhooks = await client.channels.find(c => c.id == config.youtube.post_channel_id).fetchWebhooks()
-                        var webhook = webhooks.find(wh=> wh.name == 'AO Youtube')
-                        if (webhook == null){
-                            await client.channels.find(c => c.id == config.youtube.post_channel_id).createWebhook('AO Youtube', 'https://cdn.discordapp.com/attachments/662735703284908067/785229698732654612/Screen_Shot_2020-07-13_at_10.png')
-                            webhook = webhooks.find(wh=> wh.name == 'AO Youtube')
-                            if (webhook == null) return
+    try{
+        setInterval(function(){
+            yt.channelVideos(config.youtube.apikey, config.youtube.channelID, function(channelItems) {
+                var timestamps = []
+                channelItems.forEach(i=>{
+                    timestamps.push({MeasureDate: i.snippet.publishedAt})
+                })
+                var lastVid_timestamp = getLatestDate(timestamps)
+                channelItems.forEach(async i=>{
+                    if (new Date(i.snippet.publishedAt).getTime() == lastVid_timestamp){
+                        if (old_yt_id != undefined && old_yt_id === i.id.videoId) {
+                            console.log('[YT] no new posts')
                         }
+                        if (old_yt_id != undefined && old_ig_id !== i.id.videoId){
+                            console.log('[YT] new post!')
     
-                        let embed = new Discord.MessageEmbed
-                        embed   .setColor(config.youtube.embed_color)
-                                .setAuthor('New video!', client.user.displayAvatarURL(), `https://www.youtube.com/watch?v=${i.id.videoId}`)
-                                .setDescription(`[**${i.snippet.title}**](https://www.youtube.com/watch?v=${i.id.videoId})`)
-                                .setImage(i.snippet.thumbnails.high.url)
-    
-                        webhook.send(`https://www.youtube.com/watch?v=${i.id.videoId}`, {
-                            username: 'Arendelle Odyssey',
-                            avatarURL: 'https://cdn.discordapp.com/attachments/662735703284908067/785229698732654612/Screen_Shot_2020-07-13_at_10.png',
-                            embeds: [embed]
-                        })
-                        old_yt_id = i.id.videoId
+                            var webhooks = await client.channels.find(c => c.id == config.youtube.post_channel_id).fetchWebhooks()
+                            var webhook = webhooks.find(wh=> wh.name == 'AO Youtube')
+                            if (webhook == null){
+                                await client.channels.find(c => c.id == config.youtube.post_channel_id).createWebhook('AO Youtube', 'https://cdn.discordapp.com/attachments/662735703284908067/785229698732654612/Screen_Shot_2020-07-13_at_10.png')
+                                webhook = webhooks.find(wh=> wh.name == 'AO Youtube')
+                                if (webhook == null) return
+                            }
+        
+                            let embed = new Discord.MessageEmbed
+                            embed   .setColor(config.youtube.embed_color)
+                                    .setAuthor('New video!', client.user.displayAvatarURL(), `https://www.youtube.com/watch?v=${i.id.videoId}`)
+                                    .setDescription(`[**${i.snippet.title}**](https://www.youtube.com/watch?v=${i.id.videoId})`)
+                                    .setImage(i.snippet.thumbnails.high.url)
+        
+                            webhook.send(`https://www.youtube.com/watch?v=${i.id.videoId}`, {
+                                username: 'Arendelle Odyssey',
+                                avatarURL: 'https://cdn.discordapp.com/attachments/662735703284908067/785229698732654612/Screen_Shot_2020-07-13_at_10.png',
+                                embeds: [embed]
+                            })
+                            old_yt_id = i.id.videoId
+                        }
+                        if (old_yt_id == undefined) {
+                            console.log('[YT] var not defined')
+                            old_yt_id = i.id.videoId
+                        }
                     }
-                    if (old_yt_id == undefined) {
-                        console.log('[YT] var not defined')
-                        old_yt_id = i.id.videoId
-                    }
-                }
-            })
-        });
-    }, config.youtube.check_time * 1000)
+                })
+            });
+        }, config.youtube.check_time * 1000)
+    } catch (err) {
+        console.error(err)
+        client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube streaming api: \`\`\`${err}\`\`\``)
+    }
 }
