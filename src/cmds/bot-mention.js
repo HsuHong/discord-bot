@@ -61,7 +61,7 @@ module.exports = function(client, message, prefix, config, sql){
                 } else {
                     var list = []
                     result.forEach(r=>{
-                        list.push(i.id + ' - ' + i.message)
+                        list.push(r.id + ' - ' + r.message)
                     })
                     fs.writeFileSync('./data/cache/mention-messages.txt', list.join('\n'))
                     let attachment = new Discord.MessageAttachment('./data/cache/mention-messages.txt')
