@@ -10,7 +10,6 @@ module.exports = function(client, message, prefix, config, sql){
 
         result.forEach(r=>{
             var command = r['command-name']
-            console.log(command)
             if (message.content.toLowerCase() == prefix + command.toLowerCase()){
                 sql.query("SELECT `message` FROM `mention_responses` WHERE `command-name` = ?", command, (err, result)=>{
                     if (err){
