@@ -9,7 +9,7 @@ module.exports = function(client, message, prefix, config, sql){
     require('./twitter/tweet.js')(client, message, prefix, config)
 
     // AO managment commands
-    require('./mods/embed-announcement.js')(message, client, prefix, config)
+    //require('./mods/embed-announcement.js')(message, client, prefix, config)
 
     // AO commands
     require('./ao/sots.js')(message, client, prefix, config)
@@ -18,6 +18,8 @@ module.exports = function(client, message, prefix, config, sql){
     // Owner commands
     if (message.author.id == config.discord.owner_id){
         require('./owner/update.js')(message, client, prefix, config)
+        require('./owner/eval.js')(message, client, prefix)
+        require('./owner/shell.js')(message, client, prefix)
     }
 
 }
