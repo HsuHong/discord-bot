@@ -33,23 +33,14 @@ module.exports = function(client, message, prefix, config, sql){
         } else if (args[0].toLowerCase() == 'remove'){
             args.shift()
             if (args.length < 1) return message.channel.send(message.author.username + ', I need the ID!')
-            sql.query("SELECT `message` FROM `mention_responses` WHERE `id` = ?", args[0], (err, result)=>{
+            sql.query("DELETE FROM `mention_responses` WHERE `id` = ?", args[0], (err, result)=>{
                 if (err){
-                  console.error(err)
-                  message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
-                  client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error removing custom mention msg: \`\`\`${err}\`\`\``)
+                    console.error(err)
+                    message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
+                    client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error removing custom mention msg: \`\`\`${err}\`\`\``)
                 } else {
                     var message = result[0].message
-                    sql.query("DELETE FROM `mention_responses` WHERE `id` = ?", args[0], (err, result)=>{
-                        if (err){
-                          console.error(err)
-                          message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
-                          client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error removing custom mention msg: \`\`\`${err}\`\`\``)
-                        } else {
-                            var message = result[0].message
-                            message.channel.send(':white_check_mark: ' + message.author.username + `, your message "${message}" has been removed!`)
-                        }
-                    })
+                    message.channel.send(':white_check_mark: ' + message.author.username + `, your message #${args(0)} has been removed!`)
                 }
             })
         } else if (args[0].toLowerCase() == 'list'){
