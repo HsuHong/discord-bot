@@ -14,8 +14,27 @@ function getLatestDate(data) {
 
 module.exports = function(client, config, old_yt_id){
     try{
+
+        youtube.authenticate({
+            type: 'key',
+            key: config.youtube.apikey,
+        });
+
         setInterval(function(){
-            yt.channelVideos(config.youtube.apikey, config.youtube.channelID, function(channelItems) {
+            youtube.search.list({
+                type: 'video',
+                part: 'snippet',
+                pageToken: null,
+                maxResults: 50,
+                channelId: config.youtube.channelID,
+            }, function(err, data) {
+                if (err) return console.log('error: ' + err);
+                var channelItems = []
+            
+                for (var x in data.data.items) {
+                    channelItems.push(data.data.items[x]);
+                }
+            
                 var timestamps = []
                 channelItems.forEach(i=>{
                     timestamps.push({MeasureDate: i.snippet.publishedAt})
