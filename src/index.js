@@ -2,6 +2,7 @@ const fs = require('fs')
 const config = JSON.parse(fs.readFileSync('./data/config.json'))
 const Discord = require('discord.js')
 const client = new Discord.Client()
+const wait = require('util').promisify(setTimeout);
 
 const MySQL = require('mysql')
 const sql = MySQL.createConnection({
@@ -29,7 +30,9 @@ else {
     client.login(config.discord.token)
 }
 
-client.on('ready', () => {
+client.on('ready', async () => {
+    await wait(1000);
+
     console.log(`Logged in as ${client.user.tag}`)
 
     sql.connect(()=>{
@@ -38,14 +41,6 @@ client.on('ready', () => {
 
     // start express server
     require('./web-express/exp-srv.js')(client, config, sql)
-
-    // Read @arendelleodyssey IG posts
-    //var old_ig_id = undefined
-    //require('./events/instagram/streaming-ig.js')(client, config, old_ig_id)
-
-    // Check new youtube posts
-    var old_yt_id = undefined
-    require('./events/youtube/streaming-yt.js')(client, config, old_yt_id)
 
     if (client.user.id == config.discord.bot_id){
         const twitter_client = new Twitter({
@@ -60,6 +55,14 @@ client.on('ready', () => {
         
         // Read @ArendelleO Tweets
         require('./events/twitter/streaming-tweets.js')(twitter_client, client, config, sql)
+
+        // Read @arendelleodyssey IG posts
+        //var old_ig_id = undefined
+        //require('./events/instagram/streaming-ig.js')(client, config, old_ig_id)
+
+        // Check new youtube posts
+        var old_yt_id = undefined
+        require('./events/youtube/streaming-yt.js')(client, config, old_yt_id)
 
     } else if (client.user.id == config.discord.bot_id_beta) {
         client.user.setActivity(config.discord.prefix_beta + 'help', { type: 'LISTENING' })
