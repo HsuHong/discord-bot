@@ -106,3 +106,4 @@ dist
 data/config.json
 
 data/cache/*
+!data/cache/.gitkeep
