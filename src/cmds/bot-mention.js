@@ -35,36 +35,71 @@ module.exports = function(client, message, prefix, config, sql){
         } else if (args[0].toLowerCase() == 'remove'){
             args.shift()
             if (args.length < 1) return message.channel.send(message.author.username + ', I need the ID!')
-            sql.query("DELETE FROM `mention_responses` WHERE `id` = ? AND `user` = ?", [args[0], message.author.id], (err, result)=>{
-                if (err){
-                    console.error(err)
-                    message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
-                    client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error removing custom mention msg: \`\`\`${err}\`\`\``)
-                } else {
-                    if (result.affectedRows == 0) {
-                        message.channel.send(':negative_squared_cross_mark: Invalid ID or unauthorised')
+            if (message.member.hasPermission("MANAGE_MESSAGES")) {
+                sql.query("DELETE FROM `mention_responses` WHERE `id` = ?", args[0], (err, result)=>{
+                    if (err){
+                        console.error(err)
+                        message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
+                        client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error removing custom mention msg: \`\`\`${err}\`\`\``)
                     } else {
-                        message.channel.send(':white_check_mark: ' + message.author.username + `, your message #${args[0]} has been removed!`)
+                        if (result.affectedRows == 0) {
+                            message.channel.send(':negative_squared_cross_mark: Invalid ID or unauthorised')
+                        } else {
+                            message.channel.send(':white_check_mark: ' + message.author.username + `, message #${args[0]} has been removed!`)
+                        }
                     }
-                }
-            })
+                })
+            } else {
+                sql.query("DELETE FROM `mention_responses` WHERE `id` = ? AND `user` = ?", [args[0], message.author.id], (err, result)=>{
+                    if (err){
+                        console.error(err)
+                        message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
+                        client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error removing custom mention msg: \`\`\`${err}\`\`\``)
+                    } else {
+                        if (result.affectedRows == 0) {
+                            message.channel.send(':negative_squared_cross_mark: Invalid ID or unauthorised')
+                        } else {
+                            message.channel.send(':white_check_mark: ' + message.author.username + `, your message #${args[0]} has been removed!`)
+                        }
+                    }
+                })
+            }
         } else if (args[0].toLowerCase() == 'list'){
-            sql.query("SELECT * FROM `mention_responses` WHERE `user` = ?", message.author.id, (err, result)=>{
-                if (err){
-                  console.error(err)
-                  message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
-                  client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error fetching custom mention msg: \`\`\`${err}\`\`\``)
-                } else {
-                    var list = []
-                    result.forEach(r=>{
-                        list.push(r.id + ' - ' + r.message)
-                    })
-                    fs.writeFileSync('./data/cache/mention-messages.txt', list.join('\n'))
-                    let attachment = new Discord.MessageAttachment('./data/cache/mention-messages.txt')
-                    message.author.send('Your messages\nFormat: \`ID - Message\`', attachment)
-                    message.channel.send(message.author.username + ', I\'ve sent the list on your DM')
-                }
-            })
+            if (message.member.hasPermission("MANAGE_MESSAGES")) {
+                sql.query("SELECT * FROM `mention_responses`", (err, result)=>{
+                    if (err){
+                      console.error(err)
+                      message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
+                      client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error fetching custom mention msg: \`\`\`${err}\`\`\``)
+                    } else {
+                        var list = []
+                        result.forEach(r=>{
+                            list.push(r.id + ' - ' + r.user + '(' + r['command-name'] + ')' + ' - ' + r.message)
+                        })
+                        fs.writeFileSync('./data/cache/mention-messages.txt', list.join('\n'))
+                        let attachment = new Discord.MessageAttachment('./data/cache/mention-messages.txt')
+                        message.author.send('Your messages\nFormat: \`Message ID - User ID (Command name) - Message\`', attachment)
+                        message.channel.send(message.author.username + ', I\'ve sent the list on your DM')
+                    }
+                })
+            } else {
+                sql.query("SELECT * FROM `mention_responses` WHERE `user` = ?", message.author.id, (err, result)=>{
+                    if (err){
+                      console.error(err)
+                      message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
+                      client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error fetching custom mention msg: \`\`\`${err}\`\`\``)
+                    } else {
+                        var list = []
+                        result.forEach(r=>{
+                            list.push(r.id + ' - ' + r.message)
+                        })
+                        fs.writeFileSync('./data/cache/mention-messages.txt', list.join('\n'))
+                        let attachment = new Discord.MessageAttachment('./data/cache/mention-messages.txt')
+                        message.author.send('Your messages\nFormat: \`Message ID - Message\`', attachment)
+                        message.channel.send(message.author.username + ', I\'ve sent the list on your DM')
+                    }
+                })
+            }
         } else return message.react('❎')
     }
     if (message.content.toLowerCase().startsWith(`<@${client.user.id}>`) || message.content.toLowerCase().startsWith(`<@!${client.user.id}>`)){
