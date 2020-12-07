@@ -21,7 +21,8 @@ module.exports = function(client, message, prefix, config, sql){
         } else if (args[0].toLowerCase() == 'add'){
             args.shift()
             if (args.length < 1) return message.channel.send(message.author.username + ', I need a message!')
-            if (message.mentions.users.first() == undefined || message.mentions.everyone.first() == undefined || message.mentions.roles.first() == undefined || message.mentions.members.first() == undefined) return message.channel.send(message.author.username + ', I\'ll not mention a user or everyone!')
+            if (message.mentions.users.first() != undefined || message.mentions.roles.first() != undefined || message.mentions.members.first() != undefined) return message.channel.send(message.author.username + ', I\'ll not mention a user or a role!')
+            if (message.mentions.everyone) return message.channel.send(message.author.username + ', I\'ll not mention everyone or here!')
             sql.query("INSERT INTO `mention_responses` (`user`, `message`, `command-name`) VALUES (?, ?, ?)",[message.author.id, args.join(' '), message.author.username.split(' ').join('')] , (err, result)=>{
                 if (err){
                   console.error(err)
