@@ -34,7 +34,7 @@
     "shelljs": "^0.8.4",
     "twit": "2.2.11",
     "twitter-lite": "^0.14.0",
-    "youtube-channel-videos": "^1.0.0"
+    "youtube-api": "^3.0.1"
   },
   "devDependencies": {
     "eslint": "^7.14.0"

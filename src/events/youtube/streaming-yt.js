@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const yt = require('youtube-channel-videos')
+const youtube = require('youtube-api')
 
 function getLatestDate(data) {
     // convert to timestamp and sort
