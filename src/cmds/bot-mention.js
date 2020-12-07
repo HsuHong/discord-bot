@@ -66,6 +66,7 @@ module.exports = function(client, message, prefix, config, sql){
                     fs.writeFileSync('./data/cache/mention-messages.txt', list.join('\n'))
                     let attachment = new Discord.MessageAttachment('./data/cache/mention-messages.txt')
                     message.author.send('Your messages\nFormat: \`ID - Message\`', attachment)
+                    message.channel.send(message.author.username + ', I\'ve sent the list on your DM')
                 }
             })
         } else return message.react('❎')
