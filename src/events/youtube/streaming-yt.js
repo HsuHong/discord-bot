@@ -29,8 +29,8 @@ module.exports = function(client, config, old_yt_id){
                 channelId: config.youtube.channelID,
             }, function(err, data) {
                 if (err) return function(){
-                    console.error('Youtube Fetch error: ' + err);
-                    // client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube streaming api: \`\`\`${err}\`\`\``)
+                    console.log('[YT] Fetch error: ' + err);
+                    client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube fetch api: \`\`\`${err}\`\`\``)
                 }
                 var channelItems = []
             
