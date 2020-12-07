@@ -4,7 +4,7 @@ function randomItem(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-module.exports = function(message, client, config, sql){
+module.exports = function(client, message, prefix, config, sql){
     sql.query("SELECT DISTINCT `command-name` FROM `mention_responses`", (err, result)=>{
         if (err) return
 
