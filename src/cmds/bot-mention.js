@@ -9,7 +9,7 @@ module.exports = function(client, message, prefix, config, sql){
     if (message.content.toLowerCase().startsWith(prefix + 'mention')){
         let args = message.content.split(" ");
         args.shift();
-        if (args.length < 1) return function(){
+        if (args.length < 1) {
             let embed = new Discord.MessageEmbed
             embed.setColor('RANDOM')
             .setTitle('Custom text when you mention ' + client.user.username)
@@ -18,8 +18,7 @@ module.exports = function(client, message, prefix, config, sql){
             .addField('Removing a message', `\`${prefix}mention remove [ID]\` - Removes the message with the ID, it will be deleted from the bot\'s database`)
             .addField('List your messages:', `\`${prefix}mention list\` - The bot will send you a DM with a file containig all the messages you registed *(GDPR)*`)
             message.channel.send(embed)
-        }
-        if (args[0].toLowerCase() == 'add'){
+        } else if (args[0].toLowerCase() == 'add'){
             args.shift()
             if (args.length < 1) return message.channel.send(message.author.username + ', I need a message!')
             sql.query("INSERT INTO `mention_responses` (`user`, `message`) VALUES (?, ?)",[message.author.id, args.join(' ')] , (err, result)=>{
@@ -69,7 +68,7 @@ module.exports = function(client, message, prefix, config, sql){
                     message.author.send('Your messages\nFormat: \`ID - Message\`', attachment)
                 }
             })
-        }
+        } else return message.react('❎')
     }
     if (message.content.toLowerCase().startsWith(`<@${client.user.id}>`) || message.content.toLowerCase().startsWith(`<@!${client.user.id}>`)){
         sql.query("SELECT `message` FROM `mention_responses` WHERE `user` = ?", message.author.id, (err, result)=>{
@@ -79,6 +78,7 @@ module.exports = function(client, message, prefix, config, sql){
             } else {
                 var messages = []
                 result.forEach(r=>messages.push(r.message))
+                if (messages.length < 1) return
                 message.channel.send(randomItem(messages))
             }
         })
