@@ -44,7 +44,7 @@ module.exports = function(client, message, prefix, config, sql){
                     if (result.affectedRows == 0) {
                         message.channel.send(':negative_squared_cross_mark: Invalid ID or unauthorised')
                     } else {
-                        message.channel.send(':white_check_mark: ' + message.author.username + `, your message #${args(0)} has been removed!`)
+                        message.channel.send(':white_check_mark: ' + message.author.username + `, your message #${args[0]} has been removed!`)
                     }
                 }
             })
