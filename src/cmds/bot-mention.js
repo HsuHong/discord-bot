@@ -21,7 +21,7 @@ module.exports = function(client, message, prefix, config, sql){
         } else if (args[0].toLowerCase() == 'add'){
             args.shift()
             if (args.length < 1) return message.channel.send(message.author.username + ', I need a message!')
-            sql.query("INSERT INTO `mention_responses` (`user`, `message`) VALUES (?, ?)",[message.author.id, args.join(' ')] , (err, result)=>{
+            sql.query("INSERT INTO `mention_responses` (`user`, `message`, `command-name`) VALUES (?, ?, ?)",[message.author.id, args.join(' '), message.author.username.split(' ').join('')] , (err, result)=>{
                 if (err){
                   console.error(err)
                   message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
