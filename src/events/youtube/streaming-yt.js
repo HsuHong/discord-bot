@@ -28,7 +28,10 @@ module.exports = function(client, config, old_yt_id){
                 maxResults: 50,
                 channelId: config.youtube.channelID,
             }, function(err, data) {
-                if (err) return console.log('error: ' + err);
+                if (err) return function(){
+                    console.error('Youtube Fetch error: ' + err);
+                    // client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube streaming api: \`\`\`${err}\`\`\``)
+                }
                 var channelItems = []
             
                 for (var x in data.data.items) {
@@ -59,11 +62,11 @@ module.exports = function(client, config, old_yt_id){
                             let embed = new Discord.MessageEmbed
                             embed   .setColor(config.youtube.embed_color)
                                     .setAuthor('New video!', client.user.displayAvatarURL(), `https://www.youtube.com/watch?v=${i.id.videoId}`)
-                                    .setDescription(`[**${i.snippet.title}**](https://www.youtube.com/watch?v=${i.id.videoId})`)
+                                    .setDescription(`[**${i.snippet.title}**](https://www.youtube.com/watch?v=${i.id.videoId})\n\n${i.snippet.description}`)
                                     .setImage(i.snippet.thumbnails.high.url)
         
                             webhook.send(`https://www.youtube.com/watch?v=${i.id.videoId}`, {
-                                username: 'Arendelle Odyssey',
+                                username: i.snippet.channelTitle,
                                 avatarURL: 'https://cdn.discordapp.com/attachments/662735703284908067/785229698732654612/Screen_Shot_2020-07-13_at_10.png',
                                 embeds: [embed]
                             })
