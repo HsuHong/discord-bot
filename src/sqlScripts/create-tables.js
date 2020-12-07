@@ -8,13 +8,14 @@ module.exports = async function(sql, client, config){
             console.log('[SQL] `isOnline` has been insered to `twitter_status`, value: 0')
         })
     })
-    await sql.query("CREATE TABLE `mention_responses` (`user_id` BIGINT PRIMARY KEY NOT NULL, `user_tag` VARCHAR(40) NOT NULL, `reply` JSON NULL);" , (err, res) => {
-        if (err) console.error(err)
-        console.log('[SQL] Created table `mention_responses`')
-    })
 
     await sql.query("CREATE TABLE `events` (`id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(64) NOT NULL, `date_start` DATE NOT NULL, `date_end` DATE NULL, `description` LONGTEXT NULL, PRIMARY KEY (`id`));", (err, res) => {
         if (err) console.error(err)
         console.log('[SQL] Created table `events`')
+    })
+
+    await sql.query("CREATE TABLE `mention_responses` (`id` BIGINT(255) NOT NULL AUTO_INCREMENT, `user` BIGINT(64) NOT NULL, `message` VARCHAR(1000) NOT NULL, PRIMARY KEY (`id`));", (err, res) => {
+        if (err) console.error(err)
+        console.log('[SQL] Created table `mention_responses`')
     })
 }
