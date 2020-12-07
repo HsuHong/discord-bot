@@ -7,8 +7,7 @@ module.exports = function(client, config, old_ig_id){
             ig.scrapeUserPage(config.instagram.screen_name).then(async iguser=>{
                 if (old_ig_id != undefined && old_ig_id === iguser.medias[0].shortcode) {
                     console.log('[IG] no new posts')
-                }
-                if (old_ig_id != undefined && old_ig_id !== iguser.medias[0].shortcode) {
+                } else if (old_ig_id != undefined && old_ig_id !== iguser.medias[0].shortcode) {
                     try{
                         console.log('[IG] new post!')
             
@@ -42,8 +41,7 @@ module.exports = function(client, config, old_ig_id){
                         console.error(e)
                         client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on Instagram streaming api: \`\`\`${e}\`\`\``)
                     }
-                }
-                if (old_ig_id == undefined) {
+                } else if (old_ig_id == undefined) {
                     console.log('[IG] var not defined')
                     old_ig_id = iguser.medias[0].shortcode
                 }

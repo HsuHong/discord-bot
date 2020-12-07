@@ -4,7 +4,7 @@ const youtube = require('youtube-api')
 function getLatestDate(data) {
     // convert to timestamp and sort
     var sorted_ms = data.map(function(item) {
-       return new Date(item.MeasureDate).getTime()
+       return new Date(item).getTime()
     }).sort(); 
     // take latest
     var latest_ms = sorted_ms[sorted_ms.length-1];
@@ -32,23 +32,17 @@ module.exports = function(client, config, old_yt_id){
                     console.log('[YT] Fetch error: ' + err);
                     client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube fetch api: \`\`\`${err}\`\`\``)
                 }
-                var channelItems = []
-            
-                for (var x in data.data.items) {
-                    channelItems.push(data.data.items[x]);
-                }
             
                 var timestamps = []
-                channelItems.forEach(i=>{
-                    timestamps.push({MeasureDate: i.snippet.publishedAt})
+                data.data.items.forEach(i=>{
+                    timestamps.push(i.snippet.publishedAt)
                 })
                 var lastVid_timestamp = getLatestDate(timestamps)
-                channelItems.forEach(async i=>{
+                data.data.items.forEach(async i=>{
                     if (new Date(i.snippet.publishedAt).getTime() == lastVid_timestamp){
                         if (old_yt_id != undefined && old_yt_id === i.id.videoId) {
                             console.log('[YT] no new posts')
-                        }
-                        if (old_yt_id != undefined && old_ig_id !== i.id.videoId){
+                        } else if (old_yt_id != undefined && old_ig_id !== i.id.videoId){
                             console.log('[YT] new post!')
     
                             var webhooks = await client.channels.find(c => c.id == config.youtube.post_channel_id).fetchWebhooks()
@@ -71,8 +65,7 @@ module.exports = function(client, config, old_yt_id){
                                 embeds: [embed]
                             })
                             old_yt_id = i.id.videoId
-                        }
-                        if (old_yt_id == undefined) {
+                        } else if (old_yt_id == undefined) {
                             console.log('[YT] var not defined')
                             old_yt_id = i.id.videoId
                         }
