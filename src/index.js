@@ -78,6 +78,9 @@ client.on('message', message => {
         prefix = config.discord.prefix_beta
     }
 
+    // Jinx!
+    require('./events/jinx.js')(client, message)
+
     // Auto publisher messages (API from https://github.com/Forcellrus/Discord-Auto-Publisher but simplified for one server)
     require('./events/auto-publish.js')(client, message, config)
 
