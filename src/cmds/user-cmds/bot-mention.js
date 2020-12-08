@@ -28,7 +28,7 @@ module.exports = function(client, message, prefix, config, sql){
             sql.query("INSERT INTO `mention_responses` (`user`, `message`, `command-name`) VALUES (?, ?, ?)",[message.author.id, usrMsg, message.author.username.split(' ').join('')] , (err, result)=>{
                 if (err){
                     console.error(err)
-                    if (err.includes('ER_TRUNCATED_WRONG_VALUE_FOR_FIELD')){
+                    if (err.code == 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD'){
                         message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', Incorrect format. Please check your message and retry.')
                     } else {
                         message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
