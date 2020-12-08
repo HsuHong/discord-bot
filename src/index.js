@@ -61,7 +61,7 @@ client.on('ready', async () => {
         //require('./events/instagram/streaming-ig.js')(client, config, old_ig_id)
 
         // Check new youtube posts
-        require('./events/youtube/streaming-yt.js')(client, config, old_yt_id)
+        require('./events/youtube/streaming-yt.js')(client, config)
 
     } else if (client.user.id == config.discord.bot_id_beta) {
         client.user.setActivity(config.discord.prefix_beta + 'help', { type: 'LISTENING' })
