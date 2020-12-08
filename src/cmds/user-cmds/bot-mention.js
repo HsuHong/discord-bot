@@ -25,9 +25,13 @@ module.exports = function(client, message, prefix, config, sql){
             if (message.mentions.everyone) return message.channel.send(message.author.username + ', I\'ll not mention everyone or here!')
             sql.query("INSERT INTO `mention_responses` (`user`, `message`, `command-name`) VALUES (?, ?, ?)",[message.author.id, args.join(' '), message.author.username.split(' ').join('')] , (err, result)=>{
                 if (err){
-                  console.error(err)
-                  message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
-                  client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error adding custom mention msg: \`\`\`${err}\`\`\``)
+                    console.error(err)
+                    if (err.includes('ER_TRUNCATED_WRONG_VALUE_FOR_FIELD')){
+                        message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', Incorrect format. Please check your message and retry.')
+                    } else {
+                        message.channel.send(':negative_squared_cross_mark: ' + message.author.username + ', an error has been happened. This is reported.')
+                        client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error adding custom mention msg: \`\`\`${err}\`\`\``)
+                    }
                 } else {
                   message.channel.send(':white_check_mark: ' + message.author.username + `, your message has been added! The ID of this message is \`${result.insertId}\``)
                 }
