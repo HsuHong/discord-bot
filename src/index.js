@@ -61,7 +61,6 @@ client.on('ready', async () => {
         //require('./events/instagram/streaming-ig.js')(client, config, old_ig_id)
 
         // Check new youtube posts
-        var old_yt_id = undefined
         require('./events/youtube/streaming-yt.js')(client, config, old_yt_id)
 
     } else if (client.user.id == config.discord.bot_id_beta) {
