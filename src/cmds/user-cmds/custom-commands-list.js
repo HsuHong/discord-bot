@@ -12,7 +12,7 @@ module.exports = function(client, message, prefix, config, sql){
                     var list = []
                     result.forEach(r=>{
                         var command = r['command-name']
-                        var username = client.users.cache.get(r.user).username
+                        var username = client.users.cache.get(String(r.user)).username
                         if (username == undefined) username = 'Username not found 🤦‍♂️'
                         list.push(`\`${prefix}${command}\` - ${username}`)
                     })
