@@ -74,10 +74,10 @@ module.exports = function(client, config){
                         } else if (old_yt_id != undefined && old_yt_id !== i.id.videoId){
                             console.log('[YT] new post!')
         
-                            var webhooks = await client.channels.find(c => c.id == config.youtube.post_channel_id).fetchWebhooks()
+                            var webhooks = await client.channels.cache.find(c => c.id == config.youtube.post_channel_id).fetchWebhooks()
                             var webhook = webhooks.find(wh=> wh.name == 'AO Youtube')
                             if (webhook == null){
-                                await client.channels.find(c => c.id == config.youtube.post_channel_id).createWebhook('AO Youtube', 'https://cdn.discordapp.com/attachments/662735703284908067/785229698732654612/Screen_Shot_2020-07-13_at_10.png')
+                                await client.channels.cache.find(c => c.id == config.youtube.post_channel_id).createWebhook('AO Youtube', 'https://cdn.discordapp.com/attachments/662735703284908067/785229698732654612/Screen_Shot_2020-07-13_at_10.png')
                                 webhook = webhooks.find(wh=> wh.name == 'AO Youtube')
                                 if (webhook == null) return
                             }
