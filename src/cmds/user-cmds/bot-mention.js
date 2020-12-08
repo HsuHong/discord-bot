@@ -24,7 +24,7 @@ module.exports = function(client, message, prefix, config, sql){
             if (message.mentions.users.first() != undefined || message.mentions.roles.first() != undefined || message.mentions.members.first() != undefined) return message.channel.send(message.author.username + ', I\'ll not mention a user or a role!')
             if (message.mentions.everyone) return message.channel.send(message.author.username + ', I\'ll not mention everyone or here!')
             var usrMsg = args.join(' ')
-            usrMsg = usrMsg.replace("\\'", "'")
+            usrMsg = usrMsg.replace("'", "`")
             sql.query("INSERT INTO `mention_responses` (`user`, `message`, `command-name`) VALUES (?, ?, ?)",[message.author.id, usrMsg, message.author.username.split(' ').join('')] , (err, result)=>{
                 if (err){
                     console.error(err)
