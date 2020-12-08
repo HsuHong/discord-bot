@@ -22,9 +22,9 @@ module.exports = function(message, client, prefix, sql) {
                     return
                 }
 
-                if (data.length > 1024 && data.length < 1950) return message.reply(`Output:\n\`\`\`${data}\`\`\``);
+                if (data.length > 1024 && data.length < 1950) return message.reply(`Output:\n\`\`\`${JSON.stringify(data)}\`\`\``);
             
-                if (data.length > 1950) return fs.writeFile('./data/cache/sql.log', `Command: ${args.join(' ')}\n\n\nOutput:\n\n${data}`, 'utf8', (err) => {
+                if (data.length > 1950) return fs.writeFile('./data/cache/sql.log', `Command: ${args.join(' ')}\n\n\nOutput:\n\n${JSON.stringify(data)}`, 'utf8', (err) => {
                     if (err) return function(){
                         console.log(err);
                         message.reply(`FS error: ${err}`)
@@ -33,7 +33,7 @@ module.exports = function(message, client, prefix, sql) {
                     message.reply('Output is more than 2000 characters, see attachment', attachment)
                 })
 
-                message.reply(`SQL:\n\`\`\`sql\n${args.join(' ')}\`\`\`\nResult: \`${data}\``);
+                message.reply(`SQL:\n\`\`\`sql\n${args.join(' ')}\`\`\`\nResult: \`${JSON.stringify(data)}\``);
             })  
         } catch (err) {
             const args = message.content.split(" ").slice(1);
