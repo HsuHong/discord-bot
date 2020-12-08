@@ -22,6 +22,7 @@ module.exports = function(client, message, prefix, config){
         if (message.author.id == config.discord.owner_id) embed.addField(prefix + 'update', '[Owner] Update the bot from git repo', true)
         if (message.author.id == config.discord.owner_id) embed.addField(prefix + 'eval', '[Owner] Evaluate JS', true)
         if (message.author.id == config.discord.owner_id) embed.addField(prefix + 'ssh', '[Owner] Evaluate shell command', true)
+        if (message.author.id == config.discord.owner_id) embed.addField(prefix + 'sql', '[Owner] Evaluate SQL command in bot\'s database', true)
 
         message.channel.send(embed)
     }

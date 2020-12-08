@@ -21,6 +21,7 @@ module.exports = function(client, message, prefix, config, sql){
         require('./owner/update.js')(message, client, prefix, config)
         require('./owner/eval.js')(message, client, prefix)
         require('./owner/shell.js')(message, client, prefix)
+        require('./owner/sql.js')(message, client, prefix, sql)
     }
 
 }
