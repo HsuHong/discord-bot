@@ -1,18 +1,6 @@
 const Discord = require('discord.js')
 var youtube = require('youtube-api')
 const wait = require('util').promisify(setTimeout);
-
-function getLatestDate(data) {
-    // convert to timestamp and sort
-    var sorted_ms = data.map(function(item) {
-       return new Date(item).getTime()
-    }).sort(); 
-    // take latest
-    var latest_ms = sorted_ms[sorted_ms.length-1];
-    // convert to js date object 
-    return latest_ms;
-}
-
 module.exports = function(client, config){
     try{
 
@@ -28,7 +16,8 @@ module.exports = function(client, config){
             type: 'video',
             part: 'snippet',
             pageToken: null,
-            maxResults: 50,
+            maxResults: 1,
+            order: 'date',
             channelId: config.youtube.channelID,
         }, function(err, data) {
             if (err) {
@@ -36,12 +25,7 @@ module.exports = function(client, config){
                 client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube fetch api: \`\`\`${err}\`\`\``)
                 return
             }
-            var timestamps = []
-            data.data.items.forEach(i=>{
-                timestamps.push(i.snippet.publishedAt)
-            })
-            var lastVid_timestamp = getLatestDate(timestamps)
-            data.data.items.forEach(async i=>{
+            data.items.forEach(async i=>{
                 if (new Date(i.snippet.publishedAt).getTime() == lastVid_timestamp){
                     console.log('[YT] Setting videoID var')
                     old_yt_id = i.id.videoId
@@ -54,7 +38,8 @@ module.exports = function(client, config){
                 type: 'video',
                 part: 'snippet',
                 pageToken: null,
-                maxResults: 50,
+                maxResults: 1,
+                order: 'date',
                 channelId: config.youtube.channelID,
             }, function(err, data) {
                 if (err) {
@@ -62,12 +47,7 @@ module.exports = function(client, config){
                     client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube fetch api: \`\`\`${err}\`\`\``)
                     return
                 }
-                var timestamps = []
-                data.data.items.forEach(i=>{
-                    timestamps.push(i.snippet.publishedAt)
-                })
-                var lastVid_timestamp = getLatestDate(timestamps)
-                data.data.items.forEach(async i=>{
+                data.items.forEach(async i=>{
                     if (new Date(i.snippet.publishedAt).getTime() == lastVid_timestamp){
                         if (old_yt_id != undefined && old_yt_id === i.id.videoId) {
                             console.log('[YT] no new posts')
