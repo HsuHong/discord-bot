@@ -21,11 +21,11 @@ module.exports = function(client, config){
             channelId: config.youtube.channelID,
         }, function(err, data) {
             if (err) {
-                console.error('[YT] Fetch error: ' + err);
-                client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube fetch api: \`\`\`${err}\`\`\``)
+                console.error('[YT] Fetch error: ', err);
+                // client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube fetch api: \`\`\`${err}\`\`\``)
                 return
             }
-            data.items.forEach(async i=>{
+            data.data.items.forEach(async i=>{
                 if (new Date(i.snippet.publishedAt).getTime() == lastVid_timestamp){
                     console.log('[YT] Setting videoID var')
                     old_yt_id = i.id.videoId
@@ -43,11 +43,11 @@ module.exports = function(client, config){
                 channelId: config.youtube.channelID,
             }, function(err, data) {
                 if (err) {
-                    console.error('[YT] Fetch error: ' + err);
-                    client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube fetch api: \`\`\`${err}\`\`\``)
+                    console.error('[YT] Fetch error: ', err);
+                    // client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error on youtube fetch api: \`\`\`${err}\`\`\``)
                     return
                 }
-                data.items.forEach(async i=>{
+                data.data.items.forEach(async i=>{
                     if (new Date(i.snippet.publishedAt).getTime() == lastVid_timestamp){
                         if (old_yt_id != undefined && old_yt_id === i.id.videoId) {
                             console.log('[YT] no new posts')
