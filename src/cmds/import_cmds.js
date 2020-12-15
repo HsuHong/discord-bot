@@ -12,6 +12,7 @@ module.exports = function(client, message, prefix, config, sql){
 
     // AO managment commands
     //require('./mods/embed-announcement.js')(message, client, prefix, config)
+    require('./mods/giveaways.js')(message, client, prefix, config)
 
     // AO commands
     require('./ao/sots.js')(message, client, prefix, config)
