@@ -41,6 +41,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
                 console.error(err)
                 return false
             }
+            console.log(JSON.parse(res[0].data))
             return JSON.parse(res[0].data)
         })
     }
