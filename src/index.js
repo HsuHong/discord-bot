@@ -36,7 +36,7 @@ sql.query('SELECT * FROM `giveaways`', (err, res) => {
 })
 const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
     async getAllGiveaways(){
-        sql.query('SELECT * FROM `giveaways`', (err, res) => {
+        sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
             if (err) {
                 console.error(err)
                 return false
@@ -45,7 +45,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
         })
     }
     async saveGiveaway(messageID, giveawayData){
-        sql.query('SELECT * FROM `giveaways`', (err, res) => {
+        sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
             if (err) {
                 console.error(err)
                 return false
@@ -62,7 +62,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
         })
     }
     async editGiveaway(messageID, giveawayData){
-        sql.query('SELECT * FROM `giveaways`', (err, res) => {
+        sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
             if (err) {
                 console.error(err)
                 return false
@@ -79,7 +79,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
         })
     }
     async deleteGiveaway(messageID){
-        sql.query('SELECT * FROM `giveaways`', (err, res) => {
+        sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
             if (err) {
                 console.error(err)
                 return false
