@@ -50,7 +50,8 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
                 console.error(err)
                 return false
             }
-            var newdata = res[0].data.push(giveawayData)
+            var newdata = res[0].data
+            newdata.push(giveawayData)
             sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', newdata, (err, res) => {
                 if (err) {
                     console.error(err)
@@ -66,7 +67,8 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
                 console.error(err)
                 return false
             }
-            var newdata = res[0].data.filter((giveaway) => giveaway.messageID !== messageID).push(giveawayData)
+            var newdata = res[0].data.filter((giveaway) => giveaway.messageID !== messageID)
+            newdata.push(giveawayData)
             sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', newdata, (err, res) => {
                 if (err) {
                     console.error(err)
