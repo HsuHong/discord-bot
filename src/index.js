@@ -36,13 +36,15 @@ sql.query('SELECT * FROM `giveaways`', (err, res) => {
 })
 const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
     async getAllGiveaways(){
-        sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
-            if (err) {
-                console.error(err)
-                return false
-            }
-            return JSON.parse(res[0].data)
-        })
+        return new Promise(function (resolve, reject) {
+            sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
+                if (err) {
+                    console.error(err)
+                    reject(err);
+                }
+                resolve(JSON.parse(res[0].data));
+            })
+        });
     }
     async saveGiveaway(messageID, giveawayData){
         sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
