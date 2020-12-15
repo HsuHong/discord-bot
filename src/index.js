@@ -55,7 +55,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
             }
             var newdata = JSON.parse(res[0].data)
             newdata.push(giveawayData)
-            await sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', '['+newdata+']', (err, res) => {
+            await sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
                 if (err) {
                     console.error(err)
                     return
@@ -74,7 +74,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
             }
             var newdata = JSON.parse(res[0].data).filter((giveaway) => giveaway.messageID !== messageID)
             newdata.push(giveawayData)
-            await sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', '['+newdata+']', (err, res) => {
+            await sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
                 if (err) {
                     console.error(err)
                     return
@@ -92,7 +92,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
                 return
             }
             var newdata = JSON.parse(res[0].data).filter((giveaway) => giveaway.messageID !== messageID)
-            await sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', '['+newdata+']', (err, res) => {
+            await sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
                 if (err) {
                     console.error(err)
                     return
