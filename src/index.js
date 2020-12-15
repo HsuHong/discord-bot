@@ -48,7 +48,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
     }
     async saveGiveaway(messageID, giveawayData){
         var okay = false
-        await ql.query('SELECT `data` FROM `giveaways`', async (err, res) => {
+        await sql.query('SELECT `data` FROM `giveaways`', async (err, res) => {
             if (err) {
                 console.error(err)
                 return
