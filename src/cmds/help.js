@@ -20,6 +20,7 @@ module.exports = function(client, message, prefix, config){
         embed.addField(prefix + 'mention', 'Custom responses when you mention the bot', true)
         embed.addField(prefix + 'customlist', 'List of commands user\'s custom responses', true)
         if (config.twitter.posters.includes(message.author.id)) embed.addField(prefix + 'tweet', 'Post a tweet to Arendelle Odyssey Twitter', true)
+        if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.roles.cache.some(role => role.name.toLowerCase() == 'giveaway hoster')) embed.addField(prefix + 'giveaway', 'Host a new giveaway or manage existing giveaways', true)
         if (message.author.id == config.discord.owner_id) embed.addField(prefix + 'update', '[Owner] Update the bot from git repo', true)
         if (message.author.id == config.discord.owner_id) embed.addField(prefix + 'eval', '[Owner] Evaluate JS', true)
         if (message.author.id == config.discord.owner_id) embed.addField(prefix + 'ssh', '[Owner] Evaluate shell command', true)
