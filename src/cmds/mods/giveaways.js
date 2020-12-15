@@ -275,7 +275,7 @@ module.exports = function(message, client, prefix, config){
                 var current = []
                 var past = []
                 list.forEach(g=>{
-                    if (!g.ended) current.push(`- \`${g.messageID}\` <#${g.channelID}> - [${g.prize}](https://discord.com/channels/${g.guildID}/${g.channelID}/${g.messageID}) - Ends in ${ms(Date().now() - g.endAt,{long:true})}`)
+                    if (!g.ended) current.push(`- \`${g.messageID}\` <#${g.channelID}> - [${g.prize}](https://discord.com/channels/${g.guildID}/${g.channelID}/${g.messageID}) - Ends in ${ms(Date.now() - g.endAt,{long:true})}`)
                     else past.push(`- [${g.prize}](https://discord.com/channels/${g.guildID}/${g.channelID}/${g.messageID})`)
                 })
                 if (current.length < 1) current.push("No active giveaways :(")
