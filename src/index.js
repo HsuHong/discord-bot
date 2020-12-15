@@ -45,60 +45,54 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
         })
     }
     async saveGiveaway(messageID, giveawayData){
-        var okay = false
-        await sql.query('SELECT `data` FROM `giveaways`', async (err, res) => {
+        sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
             if (err) {
                 console.error(err)
-                return
+                return false
             }
             var newdata = JSON.parse(res[0].data)
             newdata.push(giveawayData)
-            await sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
+            sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
                 if (err) {
                     console.error(err)
-                    return
+                    return false
                 }
-                okay = true
+                return true
             })
         })
-        return okay
     }
     async editGiveaway(messageID, giveawayData){
-        var okay = false
-        await sql.query('SELECT `data` FROM `giveaways`', async (err, res) => {
+        sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
             if (err) {
                 console.error(err)
-                return
+                return false
             }
             var newdata = JSON.parse(res[0].data).filter((giveaway) => giveaway.messageID !== messageID)
             newdata.push(giveawayData)
-            await sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
+            sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
                 if (err) {
                     console.error(err)
-                    return
+                    return falsae
                 }
-                okay = true
+                return true
             })
         })
-        return okay
     }
     async deleteGiveaway(messageID){
-        var okay = false
-        await sql.query('SELECT `data` FROM `giveaways`', async (err, res) => {
+        sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
             if (err) {
                 console.error(err)
-                return
+                return false
             }
             var newdata = JSON.parse(res[0].data).filter((giveaway) => giveaway.messageID !== messageID)
-            await sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
+            sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
                 if (err) {
                     console.error(err)
-                    return
+                    return false
                 }
-                okay = true
+                return true
             })
         })
-        return okay
     }
 };
 const giveawaysManager = new GiveawayManager(client, {
