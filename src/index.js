@@ -20,6 +20,90 @@ sql.query('SHOW TABLES', async function (error, results, fields) {
 });
 const Twitter = require('twitter-lite')
 
+const DiscordGiveaways = require("discord-giveaways");
+sql.query('SELECT * FROM `giveaways`', (err, res) => {
+    if (err) {
+        console.error(err)
+    }
+    if (!res[0].data || res[0].data == "") {
+        sql.query('INSERT INTO `giveaways` (`data`) VALUES (`[]`)', (err, res) => {
+            if (err) {
+                console.error(err)
+            }
+            console.log('[SQL] Created data for giveaway table')
+        })
+    } 
+})
+const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
+    async getAllGiveaways(){
+        sql.query('SELECT * FROM `giveaways`', (err, res) => {
+            if (err) {
+                console.error(err)
+                return false
+            }
+            return res[0].data
+        })
+    }
+    async saveGiveaway(messageID, giveawayData){
+        sql.query('SELECT * FROM `giveaways`', (err, res) => {
+            if (err) {
+                console.error(err)
+                return false
+            }
+            var newdata = res[0].data.push(giveawayData)
+            sql.query('UPDATE `giveaways` SET `data` = `?` WHERE `giveaways`.`id` = 1;', newdata, (err, res) => {
+                if (err) {
+                    console.error(err)
+                    return false
+                }
+                return true;
+            })
+        })
+    }
+    async editGiveaway(messageID, giveawayData){
+        sql.query('SELECT * FROM `giveaways`', (err, res) => {
+            if (err) {
+                console.error(err)
+                return false
+            }
+            var newdata = res[0].data.filter((giveaway) => giveaway.messageID !== messageID).push(giveawayData)
+            sql.query('UPDATE `giveaways` SET `data` = `?` WHERE `giveaways`.`id` = 1;', newdata, (err, res) => {
+                if (err) {
+                    console.error(err)
+                    return false
+                }
+                return true;
+            })
+        })
+    }
+    async deleteGiveaway(messageID){
+        sql.query('SELECT * FROM `giveaways`', (err, res) => {
+            if (err) {
+                console.error(err)
+                return false
+            }
+            var newdata = res[0].data.filter((giveaway) => giveaway.messageID !== messageID)
+            sql.query('UPDATE `giveaways` SET `data` = `?` WHERE `giveaways`.`id` = 1;', newdata, (err, res) => {
+                if (err) {
+                    console.error(err)
+                    return false
+                }
+                return true;
+            })
+        })
+    }
+};
+const giveawaysManager = new GiveawayManager(client, {
+    storage: false,
+    updateCountdownEvery: 20 * 1000,
+    default: {
+        botsCanWin: false,
+        embedColor: "#FF0000",
+        reaction: "<a:RainbowHype:747087403554045962>"
+    }
+});
+client.giveawaysManager = giveawaysManager;
+
 const execArgs = process.argv;
 if (execArgs.includes('-d')) {
     console.log('Started as Dev bot')
