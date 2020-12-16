@@ -21,19 +21,6 @@ sql.query('SHOW TABLES', async function (error, results, fields) {
 const Twitter = require('twitter-lite')
 
 const DiscordGiveaways = require("discord-giveaways");
-sql.query('SELECT * FROM `giveaways`', (err, res) => {
-    if (err) {
-        console.error(err)
-    }
-    if (!res[0].data || res[0].data == "") {
-        sql.query('INSERT INTO `giveaways` (`data`) VALUES (`[]`)', (err, res) => {
-            if (err) {
-                console.error(err)
-            }
-            console.log('[SQL] Created data for giveaway table')
-        })
-    } 
-})
 const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
     async getAllGiveaways(){
         return new Promise(function (resolve, reject) {
