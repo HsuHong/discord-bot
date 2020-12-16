@@ -23,6 +23,7 @@
     "discord-giveaways": "^4.2.1",
     "discord.js": "^12.4.1",
     "download": "8.0.0",
+    "express": "^4.17.1",
     "fs": "0.0.2",
     "http-errors": "^1.8.0",
     "instagram-scraping": "^1.0.13",
