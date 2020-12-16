@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 const DiscordGiveaways = require("discord-giveaways");
 const ms = require("ms");
+const fs = require('fs')
 
 function randomItem(array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -40,7 +41,7 @@ module.exports = function(message, client, prefix, config){
                                 message.channel.send("Perfect! Now enter the name of the prize. What will the winners win?")
                                 const collector4 = message.channel.createMessageCollector(filter, {time: 60000, max: 1});
                                 collector4.on('collect', m => {
-                                    var emojiReact = randomItem(require('./giveaways_reactions.json'))
+                                    var emojiReact = randomItem(fs.readFileSync('./data/giveaways_reactions.json'))
                                     client.giveawaysManager.start(channel, {
                                         time: ms(time),
                                         prize: m.content,
@@ -95,7 +96,7 @@ module.exports = function(message, client, prefix, config){
                     // Create instant
                     const channel = message.mentions.channels.first()
                     if (!channel || !args.length >= 4) return message.channel.send('I don\'t have all arguments!')
-                    var emojiReact = randomItem(require('./giveaways_reactions.json'))
+                    var emojiReact = randomItem(fs.readFileSync('./data/giveaways_reactions.json'))
                     client.giveawaysManager.start(channel, {
                         time: ms(args[1]),
                         prize: args.slice(3).join(" "),
