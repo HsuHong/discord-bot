@@ -5,6 +5,7 @@ const fs = require('fs')
 module.exports = function(message, client, prefix, config, sql){
     sql.query("SELECT `user`, COUNT(*) AS `nbmessages` FROM `mention_responses` GROUP BY `user`", function(err, res){
         if (err){
+            console.error(err)
             message.channel.send('An error has been happened. This is reported.')
             client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error fetching custom mention msg counter: \`\`\`${err}\`\`\``)
         } else {
@@ -22,7 +23,7 @@ module.exports = function(message, client, prefix, config, sql){
                 if (t.toString().length>1995){
                     fs.writeFile('./data/cache/custommsg-stat.txt', t.toString(), 'utf8', (err) => {
                         if (err) return function(){
-                            console.log(err);
+                            console.error(err);
                             message.reply(`FS error: ${err}`)
                         }
                         const attachment = new Discord.MessageAttachment('./data/cache/custommsg-stat.txt')
@@ -32,6 +33,7 @@ module.exports = function(message, client, prefix, config, sql){
                     message.channel.send('\`\`\`'+t.toString()+'\`\`\`')
                 }
             } catch (err) {
+                console.error(err)
                 message.channel.send('An error has been happened. This is reported.')
                 client.users.cache.find(u => u.id == config.discord.owner_id).send(`:warning: Error fetching custom mention msg counter: \`\`\`${err}\`\`\``)
             }
