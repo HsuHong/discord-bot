@@ -9,7 +9,7 @@ function randomItem(array) {
 
 module.exports = function(message, client, prefix, config){
     if (message.content.toLowerCase().startsWith(prefix + 'giveaway')){
-        if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.roles.cache.some(role => role.name.toLowerCase() == 'giveaway hoster')){
+        if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.roles.cache.some(role => role.name.toLowerCase() == 'giveaway host')){
             var args = message.content.split(" ").slice(1);
             if (args.length < 1 || args[0].toLowerCase() == 'help'){
                 let embed = new Discord.MessageEmbed
@@ -296,6 +296,6 @@ module.exports = function(message, client, prefix, config){
                 message.channel.send(embed)
             }
         }
-        else message.channel.send("You don't have sufficient permissions to make/manage a giveaway. You must be at least a moderator or you must have the role \"Giveaway hoster\"")
+        else message.channel.send("You don't have sufficient permissions to make/manage a giveaway. You must be at least a moderator or you must have the role \"Giveaway Host\"")
     }
 }
