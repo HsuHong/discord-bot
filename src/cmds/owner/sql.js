@@ -33,7 +33,7 @@ module.exports = function(message, client, prefix, sql) {
                     message.reply('Output is more than 2000 characters, see attachment', attachment)
                 })
 
-                message.reply(`SQL:\n\`\`\`sql\n${args.join(' ')}\`\`\`\nResult: \`${clean(JSON.stringify(data, 2, null))}\``);
+                message.reply(`SQL:\n\`\`\`sql\n${args.join(' ')}\`\`\`\nResult: \`${clean(JSON.stringify(data, null, 2))}\``);
             })  
         } catch (err) {
             const args = message.content.split(" ").slice(1);
