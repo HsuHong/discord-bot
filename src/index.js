@@ -101,9 +101,6 @@ client.on('ready', async () => {
         console.log('[SQL] Connected to the MySQL server!')
     })
 
-    // start express server
-    require('./web-express/exp-srv.js')(client, config, sql)
-
     if (client.user.id == config.discord.bot_id){
         const twitter_client = new Twitter({
             consumer_key:        config.twitter.consumer_key,
