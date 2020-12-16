@@ -42,65 +42,46 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
                     console.error(err)
                     reject(err);
                 }
-                resolve(JSON.parse(res[0].data));
+                var all = []
+                JSON.parse(res).forEach(r=>{
+                    all.push(r.data)
+                })
+                resolve(all);
             })
         });
     }
     async saveGiveaway(messageID, giveawayData){
         return new Promise(function (resolve, reject) {
-            sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
+            sql.query("INSERT INTO `giveaways` (`message_id`, `data`) VALUES (?,?)", [messageID, JSON.stringify(giveawayData)], (err, res) => {
                 if (err) {
                     console.error(err)
                     reject(err);
                 }
-                var newdata = JSON.parse(res[0].data)
-                newdata.push(giveawayData)
-                sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
-                    if (err) {
-                        console.error(err)
-                        reject(err);
-                    }
-                    resolve(true);
-                })
+                resolve(true);
             })
-        });
+        })
     }
     async editGiveaway(messageID, giveawayData){
         return new Promise(function (resolve, reject) {
-            sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
+            sql.query('UPDATE `giveaways` SET `data` = ? WHERE `message_id` = ?;', [JSON.stringify(giveawayData), messageID], (err, res) => {
                 if (err) {
                     console.error(err)
                     reject(err);
                 }
-                var newdata = JSON.parse(res[0].data).filter((giveaway) => giveaway.messageID !== messageID)
-                newdata.push(giveawayData)
-                sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
-                    if (err) {
-                        console.error(err)
-                        reject(err);
-                    }
-                    resolve(true);
-                })
+                resolve(true);
             })
-        });
+        })
     }
     async deleteGiveaway(messageID){
         return new Promise(function (resolve, reject) {
-            sql.query('SELECT `data` FROM `giveaways`', (err, res) => {
+            sql.query('DELETE FROM `giveaways` WHERE `message_id` = ?"', messageID, (err, res) => {
                 if (err) {
                     console.error(err)
                     reject(err);
                 }
-                var newdata = JSON.parse(res[0].data).filter((giveaway) => giveaway.messageID !== messageID)
-                sql.query('UPDATE `giveaways` SET `data` = ? WHERE `id` = 1;', JSON.stringify(newdata), (err, res) => {
-                    if (err) {
-                        console.error(err)
-                        reject(err);
-                    }
-                    resolve(true);
-                })
+                resolve(true);
             })
-        });
+        })
     }
 };
 const giveawaysManager = new GiveawayManager(client, {
