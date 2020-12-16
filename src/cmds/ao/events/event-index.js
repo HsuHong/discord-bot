@@ -11,7 +11,7 @@ module.exports = function(message, client, prefix, config, sql){
             let embed = new Discord.MessageEmbed()
             embed.setTitle('Usage of ' + command)
             .setColor('RANDOM')
-            .setDescription('Create and show any events for AO. You can see the list [here](https://bot.arendelleodyssey.com/events)')
+            .setDescription('Create and show any events for AO.')
             .addField(command + ' show', 'Show lastest (current or not) event.\nYou can put an ID to show specific event', true)
             if (message.member.roles.cache.find(r => r.id === "729083781062983702")) embed.addField(command + ' create', '[ST only] Create new event', true)
 
