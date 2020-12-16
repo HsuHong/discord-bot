@@ -63,7 +63,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
     }
     async editGiveaway(messageID, giveawayData){
         return new Promise(function (resolve, reject) {
-            sql.query('UPDATE `giveaways` SET `data` = ? WHERE `message_id` = ?;', [JSON.stringify(giveawayData), messageID], (err, res) => {
+            sql.query('UPDATE `giveaways` SET `data` = ? WHERE `message_id` = ?', [JSON.stringify(giveawayData), messageID], (err, res) => {
                 if (err) {
                     console.error(err)
                     reject(err);
@@ -74,7 +74,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
     }
     async deleteGiveaway(messageID){
         return new Promise(function (resolve, reject) {
-            sql.query('DELETE FROM `giveaways` WHERE `message_id` = ?"', messageID, (err, res) => {
+            sql.query('DELETE FROM `giveaways` WHERE `message_id` = ?', messageID, (err, res) => {
                 if (err) {
                     console.error(err)
                     reject(err);
@@ -89,7 +89,7 @@ const giveawaysManager = new GiveawayManager(client, {
     updateCountdownEvery: 20 * 1000,
     default: {
         botsCanWin: false,
-        embedColor: "#FF0000",
+        embedColor: "#000F42",
         reaction: "<a:RainbowHype:747087403554045962>"
     }
 });

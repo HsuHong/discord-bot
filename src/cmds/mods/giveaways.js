@@ -2,6 +2,10 @@ const Discord = require('discord.js')
 const DiscordGiveaways = require("discord-giveaways");
 const ms = require("ms");
 
+function randomItem(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
 module.exports = function(message, client, prefix, config){
     if (message.content.toLowerCase().startsWith(prefix + 'giveaway')){
         if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.roles.cache.some(role => role.name.toLowerCase() == 'giveaway hoster')){
@@ -36,17 +40,18 @@ module.exports = function(message, client, prefix, config){
                                 message.channel.send("Perfect! Now enter the name of the prize. What will the winners win?")
                                 const collector4 = message.channel.createMessageCollector(filter, {time: 60000, max: 1});
                                 collector4.on('collect', m => {
-                                    var prize = m.content
+                                    var emojiReact = randomItem(require('./giveaways_reactions.json'))
                                     client.giveawaysManager.start(channel, {
                                         time: ms(time),
-                                        prize: prize,
+                                        prize: m.content,
                                         winnerCount: winners,
                                         hostedBy: message.author,
+                                        reaction: emojiReact,
                                         messages: {
                                             giveaway: "<:AOBlobHug2:759800110757576734> **GIVEAWAY** <:AOBlobHug1:759800134908510208>",
                                             giveawayEnded: "~~GIVEAWAY~~",
                                             timeRemaining: "Time remaining: **{duration}**!",
-                                            inviteToParticipate: "React with <a:RainbowHype:747087403554045962> to participate!",
+                                            inviteToParticipate: "React with "+emojiReact+" to participate!",
                                             winMessage: "Congratulations, {winners}! You won **{prize}**! <:AOYay:757101895104987178>",
                                             noWinner: "Giveaway cancelled, no valid participations. <:PepeCry:730145204224524410>",
                                             hostedBy: "Hosted by: {user}",
@@ -90,16 +95,18 @@ module.exports = function(message, client, prefix, config){
                     // Create instant
                     const channel = message.mentions.channels.first()
                     if (!channel || !args.length >= 4) return message.channel.send('I don\'t have all arguments!')
+                    var emojiReact = randomItem(require('./giveaways_reactions.json'))
                     client.giveawaysManager.start(channel, {
                         time: ms(args[1]),
                         prize: args.slice(3).join(" "),
                         winnerCount: parseInt(args[2]),
                         hostedBy: message.author,
+                        reaction: emojiReact,
                         messages: {
                             giveaway: "<:AOBlobHug2:759800110757576734> **GIVEAWAY** <:AOBlobHug1:759800134908510208>",
                             giveawayEnded: "~~GIVEAWAY~~",
                             timeRemaining: "Time remaining: **{duration}**!",
-                            inviteToParticipate: "React with <a:RainbowHype:747087403554045962> to participate!",
+                            inviteToParticipate: "React with "+emojiReact+" to participate!",
                             winMessage: "Congratulations, {winners}! You won **{prize}**! <:AOYay:757101895104987178>",
                             noWinner: "Giveaway cancelled, no valid participations. <:PepeCry:730145204224524410>",
                             hostedBy: "Hosted by: {user}",
