@@ -43,7 +43,7 @@ const GiveawayManager = class extends DiscordGiveaways.GiveawaysManager {
                     reject(err);
                 }
                 var all = []
-                JSON.parse(res).forEach(r=>{
+                res.forEach(r=>{
                     all.push(r.data)
                 })
                 resolve(all);
