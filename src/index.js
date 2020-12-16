@@ -3,6 +3,8 @@ const config = JSON.parse(fs.readFileSync('./data/config.json'))
 const Discord = require('discord.js')
 const client = new Discord.Client()
 const wait = require('util').promisify(setTimeout);
+const express = require('express')
+const app = express()
 
 const MySQL = require('mysql')
 const sql = MySQL.createConnection({
@@ -83,19 +85,30 @@ const giveawaysManager = new GiveawayManager(client, {
 client.giveawaysManager = giveawaysManager;
 
 const execArgs = process.argv;
+var webport;
 if (execArgs.includes('-d')) {
     console.log('Started as Dev bot')
     client.login(config.discord.token_beta)
+    webport = 8081
 }
 else {
     console.log('Started as normal')
     client.login(config.discord.token)
+    webport = 8080
 }
 
 client.on('ready', async () => {
     await wait(1000);
 
     console.log(`Logged in as ${client.user.tag}`)
+
+    app.get('/', (req, res) => {
+        res.json({'online': true, 'bot': client.user})
+      })
+      
+    app.listen(webport, () => {
+        console.log(`Status server listening at port ${webport}`)
+    })
 
     sql.connect(()=>{
         console.log('[SQL] Connected to the MySQL server!')
