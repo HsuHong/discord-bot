@@ -13,6 +13,14 @@ const sql = MySQL.createConnection({
     password : config.mysql.password,
     database : config.mysql.database
 })
+sql.connect((err)=>{
+    if (err){
+        console.error('Impossible to connect to MySQL server. Code: ' + err.code)
+        process.exit(99)
+    } else {
+        console.log('[SQL] Connected to the MySQL server! Connexion ID: ' + sql.threadId)
+    }
+})
 sql.query('SHOW TABLES', async function (error, results, fields) {
     if (error) throw error;
     if (results.length == 0){
@@ -103,15 +111,11 @@ client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`)
 
     app.get('/', (req, res) => {
-        res.json({'online': true, 'bot': client.user})
-      })
+        res.send({'online': true, 'bot': client.user})
+    })
       
     app.listen(webport, () => {
         console.log(`Status server listening at port ${webport}`)
-    })
-
-    sql.connect(()=>{
-        console.log('[SQL] Connected to the MySQL server!')
     })
 
     if (client.user.id == config.discord.bot_id){
