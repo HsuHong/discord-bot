@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fs = require('fs');
+const cors = require('cors')
 
 module.exports = function(client, config, sql, guild){
 
@@ -20,6 +21,7 @@ module.exports = function(client, config, sql, guild){
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
     app.use(cookieParser());    
+    app.use(cors())
 
     app.get('/', (req, res) => {
         res.json({'online': true})
