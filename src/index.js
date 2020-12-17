@@ -3,8 +3,6 @@ const config = JSON.parse(fs.readFileSync('./data/config.json'))
 const Discord = require('discord.js')
 const client = new Discord.Client()
 const wait = require('util').promisify(setTimeout);
-const express = require('express')
-const app = express()
 
 const MySQL = require('mysql')
 const sql = MySQL.createConnection({
@@ -93,16 +91,13 @@ const giveawaysManager = new GiveawayManager(client, {
 client.giveawaysManager = giveawaysManager;
 
 const execArgs = process.argv;
-var webport;
 if (execArgs.includes('-d')) {
     console.log('Started as Dev bot')
     client.login(config.discord.token_beta)
-    webport = 8081
 }
 else {
     console.log('Started as normal')
     client.login(config.discord.token)
-    webport = 8080
 }
 
 client.on('ready', async () => {
@@ -110,14 +105,9 @@ client.on('ready', async () => {
 
     console.log(`Logged in as ${client.user.tag}`)
 
-    app.get('/', (req, res) => {
-        res.send({'online': true, 'bot': client.user})
-    })
+    // Create REST API for api.arendelleodyssey.com
+    require('./api/_express.js')(client, config, sql)
       
-    app.listen(webport, () => {
-        console.log(`Status server listening at port ${webport}`)
-    })
-
     if (client.user.id == config.discord.bot_id){
         const twitter_client = new Twitter({
             consumer_key:        config.twitter.consumer_key,
