@@ -90,14 +90,17 @@ const giveawaysManager = new GiveawayManager(client, {
 });
 client.giveawaysManager = giveawaysManager;
 
+var guild
 const execArgs = process.argv;
 if (execArgs.includes('-d')) {
     console.log('Started as Dev bot')
     client.login(config.discord.token_beta)
+    guild = "662011227639250972"
 }
 else {
     console.log('Started as normal')
     client.login(config.discord.token)
+    guild = "729083124226719816"
 }
 
 client.on('ready', async () => {
@@ -106,7 +109,7 @@ client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`)
 
     // Create REST API for api.arendelleodyssey.com
-    require('./api/_express.js')(client, config, sql)
+    require('./api/_express.js')(client, config, sql, guild)
       
     if (client.user.id == config.discord.bot_id){
         const twitter_client = new Twitter({

@@ -3,9 +3,9 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const fs = require('fs')
+const fs = require('fs');
 
-module.exports = function(client, config, sql){
+module.exports = function(client, config, sql, guild){
 
     const app = express() 
     var port // Custom port will be proxied by apache2's module "proxy_http" to its domain
@@ -37,7 +37,7 @@ module.exports = function(client, config, sql){
 
     // Set pages
     fs.readdirSync(path.join(__dirname, 'route')).forEach(function(file) {
-        require(path.join(__dirname, 'route', file))(app, client, config, sql)
+        require(path.join(__dirname, 'route', file))(app, client, config, sql, guild)
     });
 
     // catch 404 and forward to error handler
