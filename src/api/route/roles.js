@@ -28,13 +28,8 @@ module.exports = function(app, client, config, sql, guild){
             var list = []
             var r = await client.guilds.cache.get(guild).roles.fetch(req.params.rid)
             r=r.members.array()
-            r.forEach(async m=>{
-                var u
-                if (m == null) u = null
-                else u = await client.users.fetch(m.userID)
-                list.push({member: m, user: u})
-            })
-            await res.json(list)
+            if (r.length == 0) return res.status(204).json({error: {code: 204,message: 'No Content'}});
+            res.json(r)
         } catch (err){
             console.error(err)
             if (err.code == "GUILD_MEMBERS_TIMEOUT") next(createError(504))
