@@ -29,7 +29,9 @@ module.exports = function(app, client, config, sql, guild){
             var r = await client.guilds.cache.get(guild).roles.fetch(req.params.rid)
             r=r.members.array()
             r.forEach(async m=>{
-                var u = await client.users.fetch(m.userID)
+                var u
+                if (m == null) u = null
+                else u = await client.users.fetch(m.userID)
                 list.push({member: m, user: u})
             })
             await res.json(list)
