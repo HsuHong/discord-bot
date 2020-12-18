@@ -16,7 +16,8 @@ module.exports = function(app, client, config, sql, guild){
         try{
             var r = await client.guilds.cache.get(guild).members.fetch(req.params.uid)
             var u = await client.users.fetch(req.params.uid)
-            res.json({member: r, user: u})
+            var avatar = await u.avatarURL({dynamic: true})
+            res.json({member: r, user: u, avatarURL: avatar})
         } catch (err){
             console.error(err)
             if (err.httpStatus == 404) next(createError(404))
