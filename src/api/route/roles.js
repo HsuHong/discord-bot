@@ -25,10 +25,16 @@ module.exports = function(app, client, config, sql, guild){
     })
     app.get('/'+scriptName+'/:rid/users', async (req, res, next) => {
         try{
+            var list = []
             var r = await client.guilds.cache.get(guild).roles.fetch(req.params.rid)
             r=r.members.array()
-            if (r == null) return next(createError(404))
-            res.json(r)
+            r.forEach(async m=>{
+                var u
+                if (m == null) u = null
+                else u = await client.users.fetch(m.userID)
+                list.push({member: m, user: u})
+            })
+            res.json(list)
         } catch (err){
             console.error(err)
             if (err.code == "GUILD_MEMBERS_TIMEOUT") next(createError(504))
