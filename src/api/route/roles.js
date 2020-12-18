@@ -30,16 +30,16 @@ module.exports = function(app, client, config, sql, guild){
             var r = await client.guilds.cache.get(guild).roles.fetch(req.params.rid)
             r=r.members.array()
             if (r.length == 0) return res.status(204).json({error: {code: 204,message: 'No Content'}});
+            var counter = 0
             await r.forEach(async m=>{
                 var u = await client.users.fetch(m.user.id)
                 var avatar = await u.avatarURL({dynamic: true})
                 list.push({member: m, user: u, avatarURL: avatar})
+                counter++
+                if (counter === r.length){
+                    res.json(list)
+                }
             })
-            setTimeout(()=>{
-                console.log(list)
-                if (list.length == 0) return res.status(204).json({error: {code: 204,message: 'No Content'}});
-                res.json(list)
-            }, 500)
         } catch (err){
             console.error(err)
             if (err.code == "GUILD_MEMBERS_TIMEOUT") next(createError(504))
