@@ -57,6 +57,7 @@ module.exports = function(message, client, prefix, config){
                                             noWinner: "Giveaway cancelled, no valid participations. <:PepeCry:730145204224524410>",
                                             hostedBy: "Hosted by: {user}",
                                             winners: winners == 1 ? "winner" : "winners",
+                                            embedFooter: "Good luck to you <:AOheart:732429743101837343>",
                                             endedAt: "Ended at",
                                             units: {
                                                 seconds: "seconds",
@@ -112,6 +113,7 @@ module.exports = function(message, client, prefix, config){
                             noWinner: "Giveaway cancelled, no valid participations. <:PepeCry:730145204224524410>",
                             hostedBy: "Hosted by: {user}",
                             winners: parseInt(args[2]) == 1 ? "winner" : "winners",
+                            embedFooter: "Good luck to you <:AOheart:732429743101837343>",
                             endedAt: "Ended at",
                             units: {
                                 seconds: "seconds",
