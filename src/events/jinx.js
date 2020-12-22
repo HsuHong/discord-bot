@@ -4,6 +4,7 @@ var oldmsg = undefined
 module.exports = function(client, message){
     if (oldmsg == undefined) oldmsg = message
     else {
+        if (oldmsg.author.bot || message.author.bot) return
         if (oldmsg.content.toLowerCase() == message.content.toLowerCase()){
             if (oldmsg.author.id == message.author.id) return
             if (oldmsg.channel.id != message.channel.id) return
